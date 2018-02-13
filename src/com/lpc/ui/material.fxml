@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="550.0" prefWidth="770.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lpc.control.materialControl">
+  <children>
+    <MenuBar VBox.vgrow="NEVER">
+      <menus>
+        <Menu mnemonicParsing="false" text="File" />
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="468.0" prefWidth="743.0" VBox.vgrow="ALWAYS">
+         <children>
+            <TabPane prefHeight="525.0" prefWidth="770.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <tabs>
+                <Tab text="Cek Material Injection">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="497.0" prefWidth="770.0">
+                           <children>
+                              <SplitPane dividerPositions="0.9" layoutX="305.0" layoutY="69.0" orientation="VERTICAL" prefHeight="496.0" prefWidth="770.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <items>
+                                    <TableView fx:id="tableView" prefHeight="269.0" prefWidth="329.0">
+                                      <columns>
+                                        <TableColumn fx:id="nama_partCOL" prefWidth="109.0" text="Nama Part" />
+                                        <TableColumn fx:id="nama_materialCOL" prefWidth="113.0" text="Nama Material" />
+                                          <TableColumn fx:id="customerCOL" prefWidth="75.0" text="Customer" />
+                                          <TableColumn fx:id="berat_partCOL" text="Berat Part" />
+                                          <TableColumn fx:id="berat_runnerCOL" minWidth="7.0" prefWidth="98.0" text="Berat Runner" />
+                                          <TableColumn fx:id="berat_totalCOL" prefWidth="98.0" text="Berat Total" />
+                                          <TableColumn fx:id="hargaINJCOL" prefWidth="99.0" text="Harga Inject" />
+                                          <TableColumn fx:id="ctiCOL" prefWidth="75.0" text="Cycle Time" />
+                                      </columns>
+                                    </TableView>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="192.0" prefWidth="768.0">
+                                       <children>
+                                          <Button layoutX="22.0" layoutY="11.0" mnemonicParsing="false" onAction="#getData" text="Show All Material untuk Injection" />
+                                          <Button layoutX="228.0" layoutY="11.0" mnemonicParsing="false" onAction="#clear" text="Clear" />
+                                       </children>
+                                    </AnchorPane>
+                                </items>
+                              </SplitPane>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Update Harga">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="78.0" text="Nama Material" />
+                              <Label layoutX="14.0" layoutY="119.0" text="Harga Saat Ini" />
+                              <Label layoutX="14.0" layoutY="158.0" text="Harga Baru" />
+                              <TextField fx:id="tf_upnm" layoutX="108.0" layoutY="74.0" prefHeight="25.0" prefWidth="256.0" />
+                              <TextField fx:id="tf_harganew" layoutX="108.0" layoutY="163.0" prefHeight="25.0" prefWidth="256.0" />
+                              <Label fx:id="txt_harganow" layoutX="106.0" layoutY="109.0" textFill="RED">
+                                 <font>
+                                    <Font size="26.0" />
+                                 </font>
+                              </Label>
+                              <Button layoutX="29.0" layoutY="448.0" mnemonicParsing="false" onAction="#btn_upHarga" text="Update Harga" />
+                              <Button layoutX="149.0" layoutY="448.0" mnemonicParsing="false" onAction="#btn_getHarga" text="Get Data Harga" />
+                              <RadioButton fx:id="rdbtn_inj_uh" layoutX="113.0" layoutY="44.0" mnemonicParsing="false" text="Material Inject" />
+                              <RadioButton fx:id="rdbtn_assy_uh" layoutX="225.0" layoutY="44.0" mnemonicParsing="false" text="Material Assy" />
+                              <Label layoutX="14.0" layoutY="44.0" text="Jenis Material" />
+                           </children></AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab text="Upload Material Baru">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="484.0" prefWidth="770.0">
+                           <children>
+                              <Label layoutX="15.0" layoutY="39.0" text="Nama Material Baru" />
+                              <Label layoutX="19.0" layoutY="77.0" text="Untuk Part :" />
+                              <Label layoutX="24.0" layoutY="116.0" text="Customer:" />
+                              <Label layoutX="18.0" layoutY="158.0" text="Berat Part" />
+                              <Label layoutX="16.0" layoutY="207.0" text="Berat Runner" />
+                              <Label layoutX="15.0" layoutY="248.0" text="Berat Total" />
+                              <Label layoutX="14.0" layoutY="297.0" text="Harga Material" />
+                              <TextField fx:id="tf_newnm" layoutX="144.0" layoutY="35.0" prefHeight="25.0" prefWidth="208.0" />
+                              <TextField fx:id="tf_forp" layoutX="144.0" layoutY="73.0" prefHeight="25.0" prefWidth="207.0" />
+                              <ComboBox fx:id="list_customer" layoutX="144.0" layoutY="112.0" prefHeight="25.0" prefWidth="207.0" />
+                              <TextField fx:id="tf_nbp" layoutX="144.0" layoutY="154.0" prefHeight="25.0" prefWidth="206.0" />
+                              <TextField fx:id="tf_runner" layoutX="144.0" layoutY="203.0" prefHeight="25.0" prefWidth="205.0" />
+                              <TextField fx:id="tf_ntotal" layoutX="144.0" layoutY="244.0" prefHeight="25.0" prefWidth="203.0" />
+                              <TextField fx:id="tf_hargaINJ" layoutX="145.0" layoutY="293.0" prefHeight="25.0" prefWidth="200.0" />
+                              <Label layoutX="17.0" layoutY="332.0" text="Cavity" />
+                              <TextField fx:id="tf_cav" layoutX="144.0" layoutY="328.0" prefHeight="25.0" prefWidth="201.0" />
+                              <Label layoutX="360.0" layoutY="332.0" text="CT / Shot" />
+                              <TextField fx:id="tf_shot" layoutX="428.0" layoutY="328.0" prefHeight="25.0" prefWidth="199.0" />
+                              <Button layoutX="26.0" layoutY="450.0" mnemonicParsing="false" onAction="#btn_upMat" text="Upload" />
+                              <CheckBox layoutX="93.0" layoutY="454.0" mnemonicParsing="false" text="Allow update" />
+                              <Label layoutX="371.0" layoutY="116.0" text="Jenis Material : " />
+                              <RadioButton fx:id="rdbtn_mINJ" layoutX="466.0" layoutY="116.0" mnemonicParsing="false" text="Material Inject" />
+                              <RadioButton fx:id="rdbtn_mAssy" layoutX="466.0" layoutY="146.0" mnemonicParsing="false" text="Material Assy" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="Kebutuhan Material Assy">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <SplitPane dividerPositions="0.5" layoutX="52.0" layoutY="102.0" orientation="VERTICAL" prefHeight="496.0" prefWidth="770.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <items>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                       <children>
+                                          <Label layoutX="12.0" layoutY="39.0" text="Nama Part" />
+                                          <TextField fx:id="gNP" layoutX="103.0" layoutY="35.0" prefHeight="25.0" prefWidth="243.0" promptText="Nama Part" />
+                                          <Label layoutX="12.0" layoutY="77.0" text="*Nama part Jangan Dihapus Jika belum Upload Data" textFill="RED" />
+                                          <Button layoutX="358.0" layoutY="192.0" mnemonicParsing="false" onAction="#uploadEdited" text="Upload Data" />
+                                          <Label layoutX="14.0" layoutY="110.0" text="Nama Material" />
+                                          <Label layoutX="14.0" layoutY="147.0" text="Jumlah" />
+                                          <TextField fx:id="gNM" layoutX="103.0" layoutY="106.0" prefHeight="25.0" prefWidth="242.0" />
+                                          <TextField fx:id="gJumlah" layoutX="103.0" layoutY="143.0" prefHeight="25.0" prefWidth="241.0" />
+                                          <Button layoutX="466.0" layoutY="191.0" mnemonicParsing="false" onAction="#cekMaterialAssy" text="Cek Material Assy Yang Dibutuhkan" />
+                                          <Button layoutX="696.0" layoutY="191.0" mnemonicParsing="false" onAction="#clearTableKM" text="Clear All" />
+                                          <Label layoutX="12.0" layoutY="183.0" text="Harga Assy" />
+                                          <TextField fx:id="gHarga" layoutX="103.0" layoutY="179.0" prefHeight="25.0" prefWidth="240.0" />
+                                          <Separator layoutX="448.0" layoutY="14.0" orientation="VERTICAL" prefHeight="217.0" prefWidth="6.0" />
+                                          <Label layoutX="454.0" layoutY="39.0" text="Kode Part" />
+                                          <TextField fx:id="gKP" layoutX="453.0" layoutY="65.0" prefHeight="25.0" prefWidth="182.0" />
+                                       </children>
+                                    </AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                       <children>
+                                          <TableView fx:id="kebutuhanView" layoutX="14.0" layoutY="9.0" prefHeight="244.0" prefWidth="768.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <columns>
+                                              <TableColumn fx:id="km_npCOL" prefWidth="241.0" text="Nama Part" />
+                                              <TableColumn fx:id="km_nmCOL" minWidth="0.0" prefWidth="189.0" text="Nama Material" />
+                                                <TableColumn fx:id="km_jumCOL" prefWidth="143.0" text="Jumlah" />
+                                                <TableColumn fx:id="hargaCOL" prefWidth="184.0" text="Harga" />
+                                            </columns>
+                                          </TableView>
+                                       </children>
+                                    </AnchorPane>
+                                </items>
+                              </SplitPane>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+    </AnchorPane>
+  </children>
+</VBox>

@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="xmlbeans-2.6.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/xmlbeans-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/mysql-connector-java-5.1.44-bin.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/poi-ooxml-3.17.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/commons-collections4-4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/poi-ooxml-schemas-3.17.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/poi-3.17.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

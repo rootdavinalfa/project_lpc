@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lpc.control.modal_cekprod">
+   <children>
+      <Label layoutX="27.0" layoutY="14.0" text="Nama Part" />
+      <Label layoutX="24.0" layoutY="58.0" text="Tanggal Produksi" />
+      <Label layoutX="315.0" layoutY="58.0" text="Jam Produksi" />
+      <Label layoutX="25.0" layoutY="84.0" text="Keterangan" />
+      <PieChart fx:id="pie" layoutX="26.0" layoutY="167.0" prefHeight="206.0" prefWidth="555.0" />
+      <TextArea fx:id="ta_ket" editable="false" layoutX="24.0" layoutY="107.0" prefHeight="60.0" prefWidth="569.0" />
+      <Label fx:id="lbl_namapart" layoutX="139.0" layoutY="7.0" text="Label">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_tp" layoutX="139.0" layoutY="50.0" text="2019/01/22" textFill="RED">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbl_jam" layoutX="403.0" layoutY="50.0" text="08:22" textFill="RED">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Button fx:id="close" layoutX="281.0" layoutY="482.0" mnemonicParsing="false" onAction="#close" text="Close" />
+      <Label fx:id="total" layoutX="229.0" layoutY="373.0" text="Label" />
+      <Label fx:id="good" layoutX="229.0" layoutY="397.0" text="Label" />
+      <Label fx:id="ng" layoutX="229.0" layoutY="424.0" text="Label" />
+      <Label layoutX="27.0" layoutY="373.0" text="Capaian Terhadap Target" />
+      <Label fx:id="capaian" layoutX="47.0" layoutY="397.0" text="100%" textFill="#00d35c">
+         <font>
+            <Font size="38.0" />
+         </font>
+      </Label>
+      <Label fx:id="target" layoutX="25.0" layoutY="465.0" text="Label" />
+      <Label fx:id="nosin" layoutX="385.0" layoutY="475.0" text="NO Mesin 11A" textFill="#0f0d97">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+      <Label fx:id="onhold" layoutX="229.0" layoutY="444.0" text="Label" />
+   </children>
+</AnchorPane>

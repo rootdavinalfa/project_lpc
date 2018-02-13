@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="431.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lpc.control.aksesControl">
+   <children>
+      <TextField fx:id="txt_kode" alignment="CENTER" layoutX="77.0" layoutY="88.0" prefHeight="84.0" prefWidth="279.0" promptText="xxxxxx">
+         <font>
+            <Font name="Arial" size="41.0" />
+         </font>
+      </TextField>
+      <Label layoutX="53.0" layoutY="14.0" text="Masukkan 6 Digit Akses Kode">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="172.0" layoutY="50.0" text="Lalu Tekan Enter" />
+      <Label fx:id="lbl_ver" layoutX="14.0" layoutY="225.0" text="Label" />
+      <Label layoutX="216.0" layoutY="249.0" text="*Hubungi Admin Jika Lupa Akses Kode" textFill="RED" />
+      <Label layoutX="124.0" layoutY="181.0" text="Jika Ada Huruf,Maka Ditulis capital" />
+   </children>
+</AnchorPane>

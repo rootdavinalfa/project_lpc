@@ -1,0 +1,21 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="LPC">
+    <output-path>$PROJECT_DIR$/out/artifacts/LPC</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="" />
+        <option name="description" value="Davin Alfarizky Putra Basudewa,Jika ada masalah silahkan email ke it_lpc@lpc-ind.com Pada saat hari kerja dan jam kerja." />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="nativeBundle" value="all" />
+        <option name="title" value="LPC Custom Program" />
+        <option name="vendor" value="IT Department LPC" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="project_lpc.jar">
+        <element id="module-output" name="project_lpc" />
+      </element>
+    </root>
+  </artifact>
+</component>
