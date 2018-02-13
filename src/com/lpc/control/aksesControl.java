@@ -35,6 +35,7 @@ public class aksesControl implements Initializable{
     public void initialize(URL url, ResourceBundle resourceBundel){
         version();
         a();
+        b();
         k();
     }
     public void version(){
@@ -61,10 +62,16 @@ public class aksesControl implements Initializable{
 
                         // if it's 11th character then just setText to previous
                         // one
+
                         txt_kode.setText(txt_kode.getText().substring(0, LIMIT));
                     }
                 }
             }
+        });
+    }
+    private void b(){
+        txt_kode.textProperty().addListener((ov, oldValue, newValue) -> {
+            txt_kode.setText(newValue.toUpperCase());
         });
     }
     private void kp(){
