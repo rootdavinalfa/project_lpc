@@ -12,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -91,6 +90,21 @@ public class mainControl implements Initializable{
         finishS.setY((primScreenBounds.getHeight() - finishS.getHeight()) / 4);
         finishS.show();
         finishS.setMaximized(true);
+    }
+    @FXML protected void management() throws Exception{
+        Parent mgmt = FXMLLoader.load(getClass().getResource("/com/lpc/ui/management.fxml"));
+        Scene scene = new Scene(mgmt);
+        Stage mgmtS = new Stage();
+        version ver = new version();
+        String ver1 = ver.version();
+        mgmtS.setTitle("Management | "+ver1);
+        mgmtS.setScene(scene);
+        //produksiS.setFullScreen(true);
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        mgmtS.setX((primScreenBounds.getWidth() - mgmtS.getWidth()) / 2);
+        mgmtS.setY((primScreenBounds.getHeight() - mgmtS.getHeight()) / 4);
+        mgmtS.show();
+        mgmtS.setMaximized(true);
     }
     public void if1(String level){
         if(level.equals("1")){

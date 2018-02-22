@@ -153,4 +153,29 @@ public class alert {
 
         alert.showAndWait();
     }
+    public void warn_poalready(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Already Inputted");
+        alert.setHeaderText("Tidak Dapat Melanjutkan Proses");
+        alert.setContentText("Data yang anda masukkan sudah terdaftar di server");
+
+        alert.showAndWait();
+    }
+
+    public void warn_poerror(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("ERROR");
+        alert.setHeaderText("Tidak Dapat Melanjutkan Proses");
+        alert.setContentText("Pastikan data sudah anda masukkan");
+
+        alert.showAndWait();
+    }
+    public void warn_poempty(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning");
+        alert.setHeaderText("Tidak Dapat Melanjutkan Proses");
+        alert.setContentText("Pastikan data sudah terinput");
+
+        alert.showAndWait();
+    }
 }

@@ -33,6 +33,7 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.JobName;
 import javax.print.attribute.standard.Sides;
+import javax.swing.plaf.nimbus.State;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -43,7 +44,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class warehouseControl implements Initializable {
@@ -61,6 +64,11 @@ public class warehouseControl implements Initializable {
     @FXML private TableColumn<h1h2,String> h1h2_nmCOL;
     @FXML private TableColumn<h1h2,String> h1h2_jumlahCOL;
     @FXML private TableView<h1h2> h1h2_tv;
+    //PO H1h2
+    @FXML private ComboBox<String> h1h2_no_po;
+    //@FXML private TextField h1h2_qty_po;
+    //@FXML private TextField h1h2_harga_po;
+    @FXML private DatePicker h1h2_po_tanggal;
 
 //h1h3
     @FXML private TextField h1h3_nm;
@@ -77,13 +85,57 @@ public class warehouseControl implements Initializable {
     @FXML private TableColumn<model_h1h3,String> h1h3_picpCOL;
     @FXML private Label aa;
 
+    @FXML private ComboBox<String> h1h2_keperluan;
     private ObservableList<h1h2> h1h2D = FXCollections.observableArrayList();
     private ObservableList<model_h1h3> h1h3_mod = FXCollections.observableArrayList();
 
     public void initialize(URL url, ResourceBundle rb){
         h1h2_refresh();
+        listingCB();
         h1h2_tvACT();
         setCurrentTime();
+        list_cb();
+    }
+    private void list_cb(){
+
+        //combo_shiftCP.setDisable(false);
+        List<String> listshift = new ArrayList<String>();
+        listshift.add("Produksi");
+        listshift.add("Aksesoris");
+        listshift.add("Others");
+        h1h2_keperluan.getItems().addAll(FXCollections.observableArrayList(listshift));
+
+    }
+
+    private void listingCB(){
+        try{
+            List<String> listPart = new ArrayList<String>();
+            listPart.clear();
+            h1h2_no_po.getItems().clear();
+            Connection con = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            con = connector.setConnection();
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT no_po FROM list_po_material WHERE status='ON DELIVERY' ORDER BY no_po ASC;");
+            while(rs.next()){
+                //List<String> listPart = new ArrayList<String>();
+                listPart.add(rs.getString(1));
+
+                //options.add(listPart);
+
+            }
+            h1h2_no_po.getItems().addAll(FXCollections.observableArrayList(listPart));
+            System.out.println(listPart);
+            con.close();
+            setCurrentTime();
+            //String dateProduksi = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+            //System.out.println(dateProduksi);
+
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     private void h1h2_tvACT(){
@@ -174,43 +226,75 @@ public class warehouseControl implements Initializable {
     public ObservableList<h1h2> getINC(){
         return h1h2D;
     }
+
+    @SuppressWarnings("all")
     @FXML private void h1h2_upload(){
-        String a = h1h2_nm.getText();
-        String ba = h1h2_qty.getText();
-        String bb;
-        bb = h1h2_qtyng.getText();
-        int b1 = Integer.parseInt(ba);
-        int b2 = Integer.parseInt(bb);
-        int b = b1;
-        String c = h1h2_satuan.getText();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        String d = h1h2_date.getValue().format(formatter);
-        String e = h1h2_pic.getText();
-        String f = h1h2_supplier.getText();
-        String g = h1h2_lotc.getText();
-        String h = h1h2_lotlpc.getText();
-        String i = h1h2_resi.getText();
-        try {
-            Class.forName("com.lpc.driver.connector");
+
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            String nm = h1h2_nm.getText();
+            String qtyOK = h1h2_qty.getText();
+            String qtyNG = h1h2_qtyng.getText();
+            String sat = h1h2_satuan.getText();
+            String tanggalterima = h1h2_date.getValue().format(formatter);
+            String pic = h1h2_pic.getText();
+            String sup = h1h2_supplier.getText();
+            String resi = h1h2_resi.getText();
+            String lotc = h1h2_lotc.getText();
+            String lotl = h1h2_lotlpc.getText();
+            String no_po = h1h2_no_po.getValue();
+            String tanggal_po = h1h2_po_tanggal.getValue().format(formatter);
+            String usage = h1h2_keperluan.getValue();
+            int terimaDB = 0;
+            int terimaWH = Integer.parseInt(qtyOK);
+            int terimaTOT= 0;
+            int po = 0;
+            //String qtyorder = h1h2_qty_po.getText();
+            //String hargaorder = h1h2_harga_po.getText();
             Connection con = null;
             Statement stmt = null;
-            //ResultSet rs = null;
+            ResultSet rs = null;
+            ResultSet rs1 = null;
             con = connector.setConnection();
             stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO warehouse_income(nama_material, qty,ok,ng, satuan, date_kedatangan, pic, supplier,lot_cust,lot_lpc,nomor_resi) VALUES('"+a+"','"+b+"','"+b1+"','"+b2+"','"+c+"','"+d+"','"+e+"','"+f+"','"+g+"','"+h+"','"+i+"');");
-            con.close();
-            h1h2resql();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            stmt.executeUpdate("INSERT INTO warehouse_income(nama_material, ok, ng, qty, satuan, date_kedatangan, pic, supplier, nomor_resi, lot_lpc, lot_cust, no_po, tanggal_po,keperluan) " +
+                    "VALUES('"+nm+"','"+qtyOK+"','"+qtyNG+"','"+qtyOK+"','"+sat+"','"+tanggalterima+"','"+pic+"','"+sup+"','"+resi+"','"+lotl+"','"+lotc+"','"+no_po+"','"+tanggal_po+"','"+usage+"');");
+            rs = stmt.executeQuery("SELECT qty_terima,qty_po FROM list_po_material WHERE no_po='"+no_po+"' && tanggal_po='"+tanggal_po+"';");
+            while (rs.next()){
+                terimaDB = rs.getInt(1);
+                po = rs.getInt(2);
+            }
+            if(po == terimaWH){
+                stmt.executeUpdate("UPDATE list_po_material SET qty_terima='"+terimaWH+"',status='ACCEPTED' WHERE no_po='"+no_po+"' && tanggal_po='"+tanggal_po+"';");
+                h1h2resql();
+                con.close();
+            }
+            else if(po>terimaWH){
+                int terima = 0;
+                terimaTOT = terimaDB+terimaWH;
+                stmt.executeUpdate("UPDATE list_po_material SET qty_terima='"+terimaTOT+"' WHERE no_po='"+no_po+"' && tanggal_po='"+tanggal_po+"';");
+                rs1 = stmt.executeQuery("SELECT qty_terima FROM list_po_material WHERE no_po='"+no_po+"' && tanggal_po='"+tanggal_po+"';");
+                while(rs1.next()){
+                    terima = rs1.getInt(1);
+                }
+                if(po == terima ){
+                    stmt.executeUpdate("UPDATE list_po_material SET status='ACCEPTED' WHERE no_po='"+no_po+"' && tanggal_po='"+tanggal_po+"';");
+                }
+                h1h2resql();
+                con.close();
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
     }
     private void h1h2resql(){
-        String a = null;
-        String b = null;
-        String c = null;
-        String d = null;
-        String e = h1h2_nm.getText();
+
         try {
+            String nm = h1h2_nm.getText();
+            int a = 0;
+            String b = null;
+            int c = 0;
+            String usage = null;
             Class.forName("com.lpc.driver.connector");
             Connection con = null;
             Statement stmt = null;
@@ -222,34 +306,37 @@ public class warehouseControl implements Initializable {
             stmt = con.createStatement();
 
             //rs = stmt.executeQuery("SELECT nama_material,SUM(qty),satuan,pic FROM warehouse_income WHERE nama_material='"+e+"';");
-            rs = stmt.executeQuery("SELECT nama_material FROM warehouseraw WHERE nama_material='"+e+"';");
+            rs = stmt.executeQuery("SELECT nama_material FROM warehouseraw WHERE nama_material='"+nm+"';");
             if(rs.next()){
-                rs1 = stmt.executeQuery("SELECT jumlah_stok,satuan FROM warehouseraw WHERE nama_material ='"+e+"';");
+                rs1 = stmt.executeQuery("SELECT jumlah_stok,satuan FROM warehouseraw WHERE nama_material ='"+nm+"';");
                 while(rs1.next()){
-                    a = rs1.getString(1);
+                    a = rs1.getInt(1);
                     b = rs1.getString(2);
                 }
-                rs2 = stmt.executeQuery("SELECT qty,satuan FROM warehouse_income WHERE nama_material='"+e+"';");
+                rs2 = stmt.executeQuery("SELECT ok,satuan,keperluan FROM warehouse_income WHERE nama_material='"+nm+"';");
                 while(rs2.next()){
-                    c = rs2.getString(1);
+                    c = rs2.getInt(1);
+                    usage = rs2.getString(3);
                 }
-                int jml1 = Integer.parseInt(a);
-                int jml2 = Integer.parseInt(c);
+                int jml1 = a;
+                int jml2 = c;
                 int jml = jml1+jml2;
-                stmt.executeUpdate("UPDATE warehouseraw SET jumlah_stok='"+jml+"',satuan='"+b+"' WHERE nama_material='"+e+"';");
+                stmt.executeUpdate("UPDATE warehouseraw SET jumlah_stok='"+jml+"',satuan='"+b+"',keperluan='"+usage+"' WHERE nama_material='"+nm+"';");
                 con.close();
 
             }
             else if (!rs.next()){
-                rs1 = stmt.executeQuery("SELECT qty,satuan FROM warehouse_income WHERE nama_material='"+e+"';");
+                rs1 = stmt.executeQuery("SELECT ok,satuan,keperluan FROM warehouse_income WHERE nama_material='"+nm+"';");
                 while (rs1.next()){
-                    a=rs1.getString(1);
+                    a=rs1.getInt(1);
                     b=rs1.getString(2);
+                    usage = rs1.getString(3);
                 }
-                stmt.executeUpdate("INSERT INTO warehouseraw(nama_material, jumlah_stok, satuan) VALUES('"+e+"','"+a+"','"+b+"');");
+                stmt.executeUpdate("INSERT INTO warehouseraw(nama_material, jumlah_stok, satuan,keperluan) VALUES('"+nm+"','"+a+"','"+b+"','"+usage+"');");
                 con.close();
             }
             h1h2_refresh();
+            listingCB();
             alert al = new alert();
             al.info_upload();
         } catch (Exception ex) {
@@ -315,13 +402,6 @@ public class warehouseControl implements Initializable {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        /*
-        String a =String.valueOf(h1h3_mod.get(0).dateProperty());
-        String b = String.valueOf(h1h3TV.getItems().size());
-        String c = String.valueOf(h1h3TV.getItems().get(0).nama_materialProperty());
-        System.out.println(a+" Size: "+b+" :: "+c);
-
-        aa.setText(a);*/
     }
     private void  pdfCreateh1h3(){
         try {

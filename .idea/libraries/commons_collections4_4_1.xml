@@ -1,14 +1,26 @@
 <component name="libraryTable">
   <library name="commons-collections4-4.1">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/xcel_uploader/src/commons-collections4-4.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/xcel_uploader/src/mysql-connector-java-5.1.44-bin.jar!/" />
-      <root url="jar://$PROJECT_DIR$/xcel_uploader/src/poi-3.17.jar!/" />
-      <root url="jar://$PROJECT_DIR$/xcel_uploader/src/poi-ooxml-3.17.jar!/" />
-      <root url="jar://$PROJECT_DIR$/xcel_uploader/src/poi-ooxml-schemas-3.17.jar!/" />
-      <root url="jar://$PROJECT_DIR$/xcel_uploader/src/xmlbeans-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/commons-collections4-4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/commons-logging-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/controlsfx-8.40.14.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/controlsfx-samples-8.40.14.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/fontbox-2.0.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/fxsampler-1.0.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/mysql-connector-java-5.1.44-bin.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/pdfbox-2.0.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/pdfbox-debugger-2.0.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/pdfbox-tools-2.0.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/poi-3.17.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/poi-ooxml-3.17.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/poi-ooxml-schemas-3.17.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/preflight-2.0.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/xmlbeans-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/xmpbox-2.0.8.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/src/com/lpc/driver/controlsfx-samples-8.40.14.jar!/" />
+    </SOURCES>
   </library>
 </component>
