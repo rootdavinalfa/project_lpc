@@ -55,11 +55,11 @@ public class modal_cekprod implements Initializable{
         timeProperty().set(time);
         dateProperty().set(date);
     }
-    public void set(String nama,String time,String date){
+    public void set(String nama,String time,String date,String stat){
         lbl_namapart.setText(nama);
         lbl_jam.setText(time);
         lbl_tp.setText(date);
-        cach();
+        cach(stat);
     }
 
     public String getNama(){
@@ -83,43 +83,7 @@ public class modal_cekprod implements Initializable{
     public StringProperty dateProperty() {
         return date;
     }
-    //private final fromCP model;
 
-    //private Scene scene;
-    //private Stage stage;
-    /*
-    @SuppressWarnings("all")
-    public void redirect(Stage stage,String name,String time ,String date)throws Exception{
-        Parent parent = FXMLLoader.load(getClass().getResource("/com/lpc/ui/selectedcekPROD.fxml"));
-        Scene scene = new Scene(parent);
-       // stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(scene);
-
-        produksiControl pc = new produksiControl();
-        //String a = pc.sendToModal();
-        //String b = pc.sendToModal1();
-        try {
-            Class.forName("com.lpc.driver.connector");
-            Connection con = null;
-            Statement stmt = null;
-            ResultSet rs = null;
-            con = connector.setConnection();
-            stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT nama_part,date,time,keterangan FROM laporan_produksi WHERE nama_part='"+name+"'&& time='"+time+"'&& date='"+date+"';");
-            while(rs.next()){
-                lbl_namapart.setText(rs.getString(1));
-                lbl_tp.setText(rs.getString(2));
-                lbl_jam.setText(rs.getString(3));
-                ta_ket.setText(rs.getString(4));
-            }
-            con.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        stage.hide();
-        stage.show();
-
-    }*/
     public void initialize(URL url, ResourceBundle rb){
         //fc.getDate();
         //produksiControl pc = new produksiControl();
@@ -130,8 +94,7 @@ public class modal_cekprod implements Initializable{
     }
 
 
-    public void cach(){
-
+    public void cach(String stat){
 
         try {
             //fromCP f = new fromCP();
@@ -145,42 +108,82 @@ public class modal_cekprod implements Initializable{
             Connection con = null;
             Statement stmt = null;
             ResultSet rs = null;
+            ResultSet rs1 = null;
             con = connector.setConnection();
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT nama_part,date,time,keterangan,actual_produksi,ng_produksi,total_ouput,operator,target,no_mesin,onhold FROM laporan_produksi WHERE nama_part='"+nama+"'&& time='"+time+"'&& date='"+date+"';");
-            while(rs.next()){
-                lbl_namapart.setText(rs.getString(1));
-                lbl_tp.setText(rs.getString(2));
-                lbl_jam.setText(rs.getString(3));
-                ta_ket.setText(rs.getString(4));
-                System.out.println(rs.getString(5));
-                System.out.println(rs.getString(6));
-                ok.addAll(new PieChart.Data("Produksi Good",rs.getInt(5)),new PieChart.Data("Produksi NG",rs.getInt(6)),new PieChart.Data("ONHOLD",rs.getInt(11)));
-                total.setText("Total Produksi: "+rs.getString(7));
-                float aa = rs.getFloat(5);
-                float bb = rs.getFloat(6);
-                float cc = rs.getFloat(7);
-                float dd = rs.getFloat(9);
-                nosin.setText("No Mesin: "+rs.getString(10));
-                float ee = rs.getFloat(11);
-                float perca = ((aa*100)/cc);
-                float percb = ((bb*100)/cc);
-                float peroh = ((ee*100)/cc);
-                float capai = ((aa*100)/dd);
-                target.setText("Target: "+String.valueOf(dd));
-                good.setText("Barang good : "+aa+" / "+perca+"%");
-                ng.setText("Barang NG : "+bb+" / "+percb+"%");
-                onhold.setText("ONHOLD : "+ee+" / "+peroh+"%");
-                pie.getData().addAll(ok);
-                pie.setTitle("Produksi Part ,Oleh Operator: "+rs.getString(8));
-                capaian.setText(String.valueOf(capai)+"%");
-                pie.setLabelLineLength(10);
-                pie.setLegendSide(Side.LEFT);
-                //ShowPercent();
-            }
-            //pie.getData().addAll(data);
+            rs1 = stmt.executeQuery("SELECT * FROM laporan_produksi WHERE nama_part='"+nama+"'&& time='"+time+"'&& date='"+date+"' && stat='WIP';");
+            if(rs1.next()){
+                rs = stmt.executeQuery("SELECT nama_part,date,time,keterangan,actual_produksi,ng_produksi,total_ouput,operator,target,no_mesin,onhold FROM laporan_produksi WHERE nama_part='"+nama+"'&& time='"+time+"'&& date='"+date+"' && stat='WIP';");
+                while(rs.next()){
+                    lbl_namapart.setText(rs.getString(1));
+                    lbl_tp.setText(rs.getString(2));
+                    lbl_jam.setText(rs.getString(3));
+                    ta_ket.setText(rs.getString(4));
+                    System.out.println(rs.getString(5));
+                    System.out.println(rs.getString(6));
+                    ok.addAll(new PieChart.Data("Produksi Good(WIP)",rs.getInt(5)),new PieChart.Data("Produksi NG",rs.getInt(6)),new PieChart.Data("ONHOLD",rs.getInt(11)));
+                    total.setText("Total Produksi: "+rs.getString(7));
+                    float aa = rs.getFloat(5);
+                    float bb = rs.getFloat(6);
+                    float cc = rs.getFloat(7);
+                    float dd = rs.getFloat(9);
+                    nosin.setText("No Mesin: "+rs.getString(10));
+                    float ee = rs.getFloat(11);
+                    float perca = ((aa*100)/cc);
+                    float percb = ((bb*100)/cc);
+                    float peroh = ((ee*100)/cc);
+                    float capai = ((aa*100)/dd);
+                    target.setText("Target: "+String.valueOf(dd));
+                    good.setText("Barang good (WIP) : "+aa+" / "+perca+"%");
+                    ng.setText("Barang NG : "+bb+" / "+percb+"%");
+                    onhold.setText("ONHOLD : "+ee+" / "+peroh+"%");
+                    pie.getData().addAll(ok);
+                    pie.setTitle("Produksi Part ,Oleh Operator: "+rs.getString(8));
+                    capaian.setText(String.valueOf(capai)+"%");
+                    pie.setLabelLineLength(10);
+                    pie.setLegendSide(Side.LEFT);
+                    //ShowPercent();
+                }
+                //pie.getData().addAll(data);
 
-            con.close();
+                con.close();
+            }
+            else if(!rs1.next()){
+                rs = stmt.executeQuery("SELECT nama_part,date,time,keterangan,actual_produksi,ng_produksi,total_ouput,operator,target,no_mesin,onhold FROM laporan_produksi WHERE nama_part='"+nama+"'&& time='"+time+"'&& date='"+date+"' && stat='FG';");
+                while(rs.next()){
+                    lbl_namapart.setText(rs.getString(1));
+                    lbl_tp.setText(rs.getString(2));
+                    lbl_jam.setText(rs.getString(3));
+                    ta_ket.setText(rs.getString(4));
+                    System.out.println(rs.getString(5));
+                    System.out.println(rs.getString(6));
+                    ok.addAll(new PieChart.Data("Produksi Good",rs.getInt(5)),new PieChart.Data("Produksi NG",rs.getInt(6)),new PieChart.Data("ONHOLD",rs.getInt(11)));
+                    total.setText("Total Produksi: "+rs.getString(7));
+                    float aa = rs.getFloat(5);
+                    float bb = rs.getFloat(6);
+                    float cc = rs.getFloat(7);
+                    float dd = rs.getFloat(9);
+                    nosin.setText("No Mesin: "+rs.getString(10));
+                    float ee = rs.getFloat(11);
+                    float perca = ((aa*100)/cc);
+                    float percb = ((bb*100)/cc);
+                    float peroh = ((ee*100)/cc);
+                    float capai = ((aa*100)/dd);
+                    target.setText("Target: "+String.valueOf(dd));
+                    good.setText("Barang good : "+aa+" / "+perca+"%");
+                    ng.setText("Barang NG : "+bb+" / "+percb+"%");
+                    onhold.setText("ONHOLD : "+ee+" / "+peroh+"%");
+                    pie.getData().addAll(ok);
+                    pie.setTitle("Produksi Part ,Oleh Operator: "+rs.getString(8));
+                    capaian.setText(String.valueOf(capai)+"%");
+                    pie.setLabelLineLength(10);
+                    pie.setLegendSide(Side.LEFT);
+                    //ShowPercent();
+                }
+                //pie.getData().addAll(data);
+
+                con.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

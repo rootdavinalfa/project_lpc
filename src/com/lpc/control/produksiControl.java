@@ -156,7 +156,8 @@ public class produksiControl implements Initializable{
     private Label lbl_totalNG;
     @FXML
     private Label lbl_totalKWH;
-
+    @FXML private CheckBox this_wip_part;
+    @FXML private TextField tf_bonggolLAP;
     @FXML private TextField lap_kodepart_xport;
     @FXML private TextField tf_cav;
     @FXML private Label lbl_npcprod;
@@ -180,6 +181,7 @@ public class produksiControl implements Initializable{
     @FXML private TableColumn<cekprod,String> kwhcprodCOL;
     @FXML private TableColumn<cekprod,String> cavcprodCOL;
     @FXML private TableColumn<cekprod,String> nomesinCOL;
+    @FXML private TableColumn<cekprod,String> statCOL;
     @FXML private TextField tf_nomesin;
     @FXML private Label lbl_cav;
     @FXML private CheckBox manualOverride;
@@ -190,6 +192,7 @@ public class produksiControl implements Initializable{
     @FXML private TableView list_kodeTL;
     @FXML private TableColumn<kodep,String> lNAMAP_col;
     @FXML private TableColumn<kodep,String> lKODEP_col;
+    @FXML private ComboBox<String> cb_untuk;
     private modal_cekprod mc;
     private Stage stage;
     private String time_shift;
@@ -208,6 +211,7 @@ public class produksiControl implements Initializable{
     @FXML private TableColumn<model_subassy,String> sa_wipCOL;
     private ObservableList<model_subassy> modl_assy = FXCollections.observableArrayList();
 
+    /*
     //Stok Region (NON)
     @FXML private Label stok_nontgl;
     @FXML private TextField stok_nonNP;
@@ -247,7 +251,7 @@ public class produksiControl implements Initializable{
 
     private ObservableList<stok_ssamodel1> ssa_mod1 = FXCollections.observableArrayList();
     private ObservableList<stok_ssamodel> ssa_mod = FXCollections.observableArrayList();
-
+*/
     //ONHOLD Region
     @FXML private TextField cek_onhold_kode;
     @FXML private Label lbl_cek_onhold_total;
@@ -297,6 +301,7 @@ public class produksiControl implements Initializable{
         disabled();
         disabled1();
         disabled2();
+        list_cq();
         radiobutton_cp();
         radiobutton_cprod();
         rdbtn_hi();
@@ -304,8 +309,8 @@ public class produksiControl implements Initializable{
         shiftTF();
         manLAP();
         list_kod();
-        stok_nonrefresh();
-        stok_ssarefresh();
+        //stok_nonrefresh();
+        //stok_ssarefresh();
         cb_shiftCP.setSelected(true);
         manualOverride.setSelected(false);
         datepickLAP.setDisable(true);
@@ -354,6 +359,7 @@ public class produksiControl implements Initializable{
                 String a = sendToModal();
                 String b = sendToModal1();
                 String c = sendToModal2();
+                String d = sendToModal3();
                 //cekprod selectedcp = cprod_tab.getSelectionModel().getSelectedItem();
                 System.out.println(a);
                 //mc = new modal_cekprod();
@@ -362,7 +368,7 @@ public class produksiControl implements Initializable{
                 loader.setLocation(getClass().getResource("/com/lpc/ui/selectedcekPROD.fxml"));
                 loader.load();
                 modal_cekprod mc = loader.getController();
-                mc.set(a,b,c);
+                mc.set(a,b,c,d);
                 Parent p = loader.getRoot();
                 Stage stage = new Stage();
                 stage.initModality(Modality.APPLICATION_MODAL);
@@ -371,29 +377,7 @@ public class produksiControl implements Initializable{
                 stage.initStyle(StageStyle.UTILITY);
                 stage.showAndWait();
 
-                /*
-                Parent modal = FXMLLoader.load(getClass().getResource("/com/lpc/ui/selectedcekPROD.fxml"));
-                modal_cekprod mc = loader.getController();
 
-
-                Scene scene = new Scene(modal);
-                Stage modals = new Stage();
-                modals.setTitle("Cek Material");
-                modals.setScene(scene);
-                modals.initModality(Modality.APPLICATION_MODAL);
-                Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-                modals.setX((primScreenBounds.getWidth() - modals.getWidth()) / 2);
-                modals.setY((primScreenBounds.getHeight() - modals.getHeight()) / 4);
-                //fromCP f = new fromCP();
-                mc.sender(a,b,c);
-                //String gg = f.getDate();
-                //System.out.println(gg);
-                //f.namaProperty(a);
-                //f.timePropert(b);
-                //f.dateProperty(c);
-                //sendToModal();
-                //sendToModal1();
-                modals.show();*/
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -415,6 +399,12 @@ public class produksiControl implements Initializable{
         String a;
         cekprod selectedcp = cprod_tab.getSelectionModel().getSelectedItem();
         a = selectedcp.getDate();
+        return a;
+    }
+    public String sendToModal3(){
+        String a;
+        cekprod selectedcp = cprod_tab.getSelectionModel().getSelectedItem();
+        a = selectedcp.getStat();
         return a;
     }
 
@@ -466,6 +456,15 @@ public class produksiControl implements Initializable{
             listshift.add("2");
             listshift.add("3");
             combo_shiftCP.getItems().addAll(FXCollections.observableArrayList(listshift));
+
+    }
+    private void list_cq(){
+
+        //combo_shiftCP.setDisable(false);
+        List<String> listshift = new ArrayList<String>();
+        listshift.add("WIP");
+        listshift.add("FG");
+        cb_untuk.getItems().addAll(FXCollections.observableArrayList(listshift));
 
     }
     private void radiobutton_cprod(){
@@ -574,8 +573,8 @@ public class produksiControl implements Initializable{
                                 SimpleDateFormat stok_non = new SimpleDateFormat("yyyy/MM/dd");
                                 dateDisplay.setText(simpleDateFormat.format(time.getTime()));
                                 lbl_time.setText(simpleDateFormat.format(time.getTime()));
-                                stok_nontgl.setText(stok_non.format(time.getTime()));
-                                ssa_tgl.setText(stok_non.format(time.getTime()));
+                                //stok_nontgl.setText(stok_non.format(time.getTime()));
+                                //ssa_tgl.setText(stok_non.format(time.getTime()));
                             }
                         }
                 ),
@@ -642,6 +641,8 @@ public class produksiControl implements Initializable{
         keterangan_TA.setDisable(true);
         tf_nomesin.setDisable(true);
         tf_onholdLAP.setDisable(true);
+        tf_bonggolLAP.setDisable(true);
+        cb_untuk.setDisable(true);
     }
 
     @SuppressWarnings("all")
@@ -660,6 +661,8 @@ public class produksiControl implements Initializable{
         keterangan_TA.setDisable(false);
         tf_onholdLAP.setDisable(false);
         tf_nomesin.setDisable(false);
+        tf_bonggolLAP.setDisable(false);
+        cb_untuk.setDisable(false);
     }
     @SuppressWarnings("all")
     private void disabled1(){
@@ -782,103 +785,209 @@ public class produksiControl implements Initializable{
     }
 @SuppressWarnings("all")
     @FXML protected  void show_cprod(){
-
-        if(rdbtn_cprod1.isSelected()){
-            cprod.clear();
-            cprod_tab.setItems(null);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-            String a = lbl_npcprod.getText();
-            String b = datepick1cprod.getValue().format(formatter);
-            try {
-                Class.forName("com.lpc.driver.connector");
-                Connection con = null;
-                Statement stmt = null;
-                ResultSet rs = null;
-                con = connector.setConnection();
-                stmt = con.createStatement();
-                rs = stmt.executeQuery("SELECT nama_part,operator,date,time,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,actual_produksi,ng_produksi,total_kwh,cav,no_mesin FROM laporan_produksi" +
-                        " WHERE nama_part ='"+a+"' && date ='"+b+"';");
-                if(rs.next()){
-                    do{
-                        cprod.add(new cekprod(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getString(12),rs.getString(13),rs.getString(14)));
-                        npcprodCOL.setCellValueFactory(cellData -> cellData.getValue().nama_partProperty());
-                        opcprodCOL.setCellValueFactory(cellData -> cellData.getValue().operatorProperty());
-                        tanggalcprodCOL.setCellValueFactory(cellData -> cellData.getValue().tanggalProperty());
-                        jamcprodCOL.setCellValueFactory(cellData -> cellData.getValue().jamProperty());
-                        shiftcprodCOL.setCellValueFactory(cellData -> cellData.getValue().shiftProperty());
-                        beratpcprodCOL.setCellValueFactory(cellData ->cellData.getValue().beratpProperty());
-                        beratrcprodCOL.setCellValueFactory(cellData -> cellData.getValue().beratrProperty());
-                        berattcprodCOL.setCellValueFactory(cellData -> cellData.getValue().berattProperty());
-                        cticprodCOL.setCellValueFactory(cellData -> cellData.getValue().ctiProperty());
-                        goodcprodCOL.setCellValueFactory(cellData-> cellData.getValue().goodProperty());
-                        ngcprodCOL.setCellValueFactory(cellData -> cellData.getValue().ngProperty());
-                        kwhcprodCOL.setCellValueFactory(cellData -> cellData.getValue().kwhProperty());
-                        cavcprodCOL.setCellValueFactory(cellData -> cellData.getValue().cavproperty());
-                        nomesinCOL.setCellValueFactory(cellData -> cellData.getValue().nomesinProperty());
+        if(this_wip_part.isSelected()){
+            System.out.println("WIP");
+            if(rdbtn_cprod1.isSelected()){
+                cprod.clear();
+                cprod_tab.setItems(null);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                String a = lbl_npcprod.getText();
+                String b = datepick1cprod.getValue().format(formatter);
+                try {
+                    Class.forName("com.lpc.driver.connector");
+                    Connection con = null;
+                    Statement stmt = null;
+                    ResultSet rs = null;
+                    con = connector.setConnection();
+                    stmt = con.createStatement();
+                    rs = stmt.executeQuery("SELECT nama_part,operator,date,time,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,actual_produksi,ng_produksi,total_kwh,cav,no_mesin FROM laporan_produksi" +
+                            " WHERE nama_part ='"+a+"' && date ='"+b+"' && stat='WIP';");
+                    if(rs.next()){
+                        do{
+                            cprod.add(new cekprod(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getString(12),rs.getString(13),rs.getString(14),"WIP"));
+                            npcprodCOL.setCellValueFactory(cellData -> cellData.getValue().nama_partProperty());
+                            opcprodCOL.setCellValueFactory(cellData -> cellData.getValue().operatorProperty());
+                            tanggalcprodCOL.setCellValueFactory(cellData -> cellData.getValue().tanggalProperty());
+                            jamcprodCOL.setCellValueFactory(cellData -> cellData.getValue().jamProperty());
+                            shiftcprodCOL.setCellValueFactory(cellData -> cellData.getValue().shiftProperty());
+                            beratpcprodCOL.setCellValueFactory(cellData ->cellData.getValue().beratpProperty());
+                            beratrcprodCOL.setCellValueFactory(cellData -> cellData.getValue().beratrProperty());
+                            berattcprodCOL.setCellValueFactory(cellData -> cellData.getValue().berattProperty());
+                            cticprodCOL.setCellValueFactory(cellData -> cellData.getValue().ctiProperty());
+                            goodcprodCOL.setCellValueFactory(cellData-> cellData.getValue().goodProperty());
+                            ngcprodCOL.setCellValueFactory(cellData -> cellData.getValue().ngProperty());
+                            kwhcprodCOL.setCellValueFactory(cellData -> cellData.getValue().kwhProperty());
+                            cavcprodCOL.setCellValueFactory(cellData -> cellData.getValue().cavproperty());
+                            nomesinCOL.setCellValueFactory(cellData -> cellData.getValue().nomesinProperty());
+                            statCOL.setCellValueFactory(cellData -> cellData.getValue().statProperty());
+                        }
+                        while (rs.next());
+                        cprod_tab.setItems(cprod);
+                        disabled2();
+                        con.close();
                     }
-                    while (rs.next());
-                    cprod_tab.setItems(cprod);
-                    disabled2();
-                    con.close();
-                }
-                else{
-                    alert al = new alert();
-                    al.warn_datanotfound();
-                }
+                    else{
+                        alert al = new alert();
+                        al.warn_datanotfound();
+                    }
 
-            } catch (Exception e) {
+                } catch (Exception e) {
+                }
+            }
+            else if(rdbtn_cprodrt.isSelected()){
+                cprod.clear();
+                cprod_tab.setItems(null);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                String a = lbl_npcprod.getText();
+                String b = datepick1cprod.getValue().format(formatter);
+                String c = datepick2cprod.getValue().format(formatter);
+                try {
+
+                    Class.forName("com.lpc.driver.connector");
+                    Connection con = null;
+                    Statement stmt = null;
+                    ResultSet rs = null;
+                    con = connector.setConnection();
+                    stmt = con.createStatement();
+                    rs = stmt.executeQuery("SELECT nama_part,operator,date,time,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,actual_produksi,ng_produksi,total_kwh,cav,no_mesin FROM laporan_produksi" +
+                            " WHERE nama_part ='"+a+"' && stat='WIP' && date BETWEEN '"+b+"' AND '"+c+"';");
+                    if(rs.next()){
+                        do{
+                            cprod.add(new cekprod(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getString(12),rs.getString(13),rs.getString(14),"WIP"));
+                            npcprodCOL.setCellValueFactory(cellData -> cellData.getValue().nama_partProperty());
+                            opcprodCOL.setCellValueFactory(cellData -> cellData.getValue().operatorProperty());
+                            tanggalcprodCOL.setCellValueFactory(cellData -> cellData.getValue().tanggalProperty());
+                            jamcprodCOL.setCellValueFactory(cellData -> cellData.getValue().jamProperty());
+                            shiftcprodCOL.setCellValueFactory(cellData -> cellData.getValue().shiftProperty());
+                            beratpcprodCOL.setCellValueFactory(cellData ->cellData.getValue().beratpProperty());
+                            beratrcprodCOL.setCellValueFactory(cellData -> cellData.getValue().beratrProperty());
+                            berattcprodCOL.setCellValueFactory(cellData -> cellData.getValue().berattProperty());
+                            cticprodCOL.setCellValueFactory(cellData -> cellData.getValue().ctiProperty());
+                            goodcprodCOL.setCellValueFactory(cellData-> cellData.getValue().goodProperty());
+                            ngcprodCOL.setCellValueFactory(cellData -> cellData.getValue().ngProperty());
+                            kwhcprodCOL.setCellValueFactory(cellData -> cellData.getValue().kwhProperty());
+                            cavcprodCOL.setCellValueFactory(cellData -> cellData.getValue().cavproperty());
+                            nomesinCOL.setCellValueFactory(cellData -> cellData.getValue().nomesinProperty());
+                            statCOL.setCellValueFactory(cellData -> cellData.getValue().statProperty());
+                        }
+                        while (rs.next());
+                        cprod_tab.setItems(cprod);
+                        disabled2();
+                        con.close();
+                    }
+                    else{
+                        alert al = new alert();
+                        al.warn_datanotfound();
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             }
         }
-        else if(rdbtn_cprodrt.isSelected()){
-            cprod.clear();
-            cprod_tab.setItems(null);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-            String a = lbl_npcprod.getText();
-            String b = datepick1cprod.getValue().format(formatter);
-            String c = datepick2cprod.getValue().format(formatter);
-            try {
-
-                Class.forName("com.lpc.driver.connector");
-                Connection con = null;
-                Statement stmt = null;
-                ResultSet rs = null;
-                con = connector.setConnection();
-                stmt = con.createStatement();
-                rs = stmt.executeQuery("SELECT nama_part,operator,date,time,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,actual_produksi,ng_produksi,total_kwh,cav,no_mesin FROM laporan_produksi" +
-                        " WHERE nama_part ='"+a+"' && date BETWEEN '"+b+"' AND '"+c+"';");
-                if(rs.next()){
-                    do{
-                        cprod.add(new cekprod(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getString(12),rs.getString(13),rs.getString(14)));
-                        npcprodCOL.setCellValueFactory(cellData -> cellData.getValue().nama_partProperty());
-                        opcprodCOL.setCellValueFactory(cellData -> cellData.getValue().operatorProperty());
-                        tanggalcprodCOL.setCellValueFactory(cellData -> cellData.getValue().tanggalProperty());
-                        jamcprodCOL.setCellValueFactory(cellData -> cellData.getValue().jamProperty());
-                        shiftcprodCOL.setCellValueFactory(cellData -> cellData.getValue().shiftProperty());
-                        beratpcprodCOL.setCellValueFactory(cellData ->cellData.getValue().beratpProperty());
-                        beratrcprodCOL.setCellValueFactory(cellData -> cellData.getValue().beratrProperty());
-                        berattcprodCOL.setCellValueFactory(cellData -> cellData.getValue().berattProperty());
-                        cticprodCOL.setCellValueFactory(cellData -> cellData.getValue().ctiProperty());
-                        goodcprodCOL.setCellValueFactory(cellData-> cellData.getValue().goodProperty());
-                        ngcprodCOL.setCellValueFactory(cellData -> cellData.getValue().ngProperty());
-                        kwhcprodCOL.setCellValueFactory(cellData -> cellData.getValue().kwhProperty());
-                        cavcprodCOL.setCellValueFactory(cellData -> cellData.getValue().cavproperty());
-                        nomesinCOL.setCellValueFactory(cellData -> cellData.getValue().nomesinProperty());
+        else if(!this_wip_part.isSelected()){
+            System.out.println("FG");
+            if(rdbtn_cprod1.isSelected()){
+                cprod.clear();
+                cprod_tab.setItems(null);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                String a = lbl_npcprod.getText();
+                String b = datepick1cprod.getValue().format(formatter);
+                try {
+                    Class.forName("com.lpc.driver.connector");
+                    Connection con = null;
+                    Statement stmt = null;
+                    ResultSet rs = null;
+                    con = connector.setConnection();
+                    stmt = con.createStatement();
+                    rs = stmt.executeQuery("SELECT nama_part,operator,date,time,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,actual_produksi,ng_produksi,total_kwh,cav,no_mesin FROM laporan_produksi" +
+                            " WHERE nama_part ='"+a+"' && date ='"+b+"' && stat='FG';");
+                    if(rs.next()){
+                        do{
+                            cprod.add(new cekprod(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getString(12),rs.getString(13),rs.getString(14),"FG"));
+                            npcprodCOL.setCellValueFactory(cellData -> cellData.getValue().nama_partProperty());
+                            opcprodCOL.setCellValueFactory(cellData -> cellData.getValue().operatorProperty());
+                            tanggalcprodCOL.setCellValueFactory(cellData -> cellData.getValue().tanggalProperty());
+                            jamcprodCOL.setCellValueFactory(cellData -> cellData.getValue().jamProperty());
+                            shiftcprodCOL.setCellValueFactory(cellData -> cellData.getValue().shiftProperty());
+                            beratpcprodCOL.setCellValueFactory(cellData ->cellData.getValue().beratpProperty());
+                            beratrcprodCOL.setCellValueFactory(cellData -> cellData.getValue().beratrProperty());
+                            berattcprodCOL.setCellValueFactory(cellData -> cellData.getValue().berattProperty());
+                            cticprodCOL.setCellValueFactory(cellData -> cellData.getValue().ctiProperty());
+                            goodcprodCOL.setCellValueFactory(cellData-> cellData.getValue().goodProperty());
+                            ngcprodCOL.setCellValueFactory(cellData -> cellData.getValue().ngProperty());
+                            kwhcprodCOL.setCellValueFactory(cellData -> cellData.getValue().kwhProperty());
+                            cavcprodCOL.setCellValueFactory(cellData -> cellData.getValue().cavproperty());
+                            nomesinCOL.setCellValueFactory(cellData -> cellData.getValue().nomesinProperty());
+                            statCOL.setCellValueFactory(cellData -> cellData.getValue().statProperty());
+                        }
+                        while (rs.next());
+                        cprod_tab.setItems(cprod);
+                        disabled2();
+                        con.close();
                     }
-                    while (rs.next());
-                    cprod_tab.setItems(cprod);
-                    disabled2();
-                    con.close();
+                    else{
+                        alert al = new alert();
+                        al.warn_datanotfound();
+                    }
+
+                } catch (Exception e) {
                 }
-                else{
-                    alert al = new alert();
-                    al.warn_datanotfound();
+            }
+            else if(rdbtn_cprodrt.isSelected()){
+                cprod.clear();
+                cprod_tab.setItems(null);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                String a = lbl_npcprod.getText();
+                String b = datepick1cprod.getValue().format(formatter);
+                String c = datepick2cprod.getValue().format(formatter);
+                try {
+
+                    Class.forName("com.lpc.driver.connector");
+                    Connection con = null;
+                    Statement stmt = null;
+                    ResultSet rs = null;
+                    con = connector.setConnection();
+                    stmt = con.createStatement();
+                    rs = stmt.executeQuery("SELECT nama_part,operator,date,time,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,actual_produksi,ng_produksi,total_kwh,cav,no_mesin FROM laporan_produksi" +
+                            " WHERE nama_part ='"+a+"' && stat='FG' && date BETWEEN '"+b+"' AND '"+c+"';");
+                    if(rs.next()){
+                        do{
+                            cprod.add(new cekprod(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getString(12),rs.getString(13),rs.getString(14),"FG"));
+                            npcprodCOL.setCellValueFactory(cellData -> cellData.getValue().nama_partProperty());
+                            opcprodCOL.setCellValueFactory(cellData -> cellData.getValue().operatorProperty());
+                            tanggalcprodCOL.setCellValueFactory(cellData -> cellData.getValue().tanggalProperty());
+                            jamcprodCOL.setCellValueFactory(cellData -> cellData.getValue().jamProperty());
+                            shiftcprodCOL.setCellValueFactory(cellData -> cellData.getValue().shiftProperty());
+                            beratpcprodCOL.setCellValueFactory(cellData ->cellData.getValue().beratpProperty());
+                            beratrcprodCOL.setCellValueFactory(cellData -> cellData.getValue().beratrProperty());
+                            berattcprodCOL.setCellValueFactory(cellData -> cellData.getValue().berattProperty());
+                            cticprodCOL.setCellValueFactory(cellData -> cellData.getValue().ctiProperty());
+                            goodcprodCOL.setCellValueFactory(cellData-> cellData.getValue().goodProperty());
+                            ngcprodCOL.setCellValueFactory(cellData -> cellData.getValue().ngProperty());
+                            kwhcprodCOL.setCellValueFactory(cellData -> cellData.getValue().kwhProperty());
+                            cavcprodCOL.setCellValueFactory(cellData -> cellData.getValue().cavproperty());
+                            nomesinCOL.setCellValueFactory(cellData -> cellData.getValue().nomesinProperty());
+                            statCOL.setCellValueFactory(cellData -> cellData.getValue().statProperty());
+                        }
+                        while (rs.next());
+                        cprod_tab.setItems(cprod);
+                        disabled2();
+                        con.close();
+                    }
+                    else{
+                        alert al = new alert();
+                        al.warn_datanotfound();
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
                 }
-            } catch (Exception e) {
-                System.out.println(e);
+
             }
         }
-
-
+        else{
+            alert al = new alert();
+            al.warn_datanotfoundCPROD();
+        }
     }
     protected void getTotalAssy(){
         String kode_part = tf_kodeP.getText();
@@ -1009,9 +1118,11 @@ public class produksiControl implements Initializable{
             String targetP = tf_targetLAP.getText();
             String actual = tf_actualLAP.getText();
             String ng = tf_ngLAP.getText();
+            String stat = cb_untuk.getValue();
             //int a = Integer.parseInt(targetP);
             int a = Integer.parseInt(actual);
             int b = Integer.parseInt(ng);
+            float bonggol = Float.parseFloat(tf_bonggolLAP.getText());
             int oh = Integer.parseInt(tf_onholdLAP.getText());
             int tot = a+b+oh;
             String tot_prod = String.valueOf(tot);
@@ -1037,6 +1148,7 @@ public class produksiControl implements Initializable{
             int nA = 0;
             int nB = 0;
             float nC = 0;
+            float nD = 0;
             //System.out.println(shift);
             if(allow_upLP.isSelected()){
                 System.out.println("A");
@@ -1046,42 +1158,101 @@ public class produksiControl implements Initializable{
                     Statement stmt = null;
                     ResultSet rs = null;
                     ResultSet rs1 = null;
+                    ResultSet rs2 = null;
                     con = connector.setConnection();
                     stmt = con.createStatement();
                     rs = stmt.executeQuery("SELECT nama_part FROM stok_barang_fresh WHERE nama_part='"+namaP+"';");
                     if(rs.next()){
-                            rs1 = stmt.executeQuery("SELECT ok,ng,runner FROM stok_barang_fresh WHERE nama_part='"+namaP+"';");
-                        while(rs1.next()){
-                            nA = rs1.getInt(1);
-                            nB = rs1.getInt(2);
-                            nC = rs1.getFloat(3);
+                        if(stat.equals("FG")){
+                            rs2 = stmt.executeQuery("SELECT ok,ng,runner,bonggol FROM stok_barang_fresh WHERE nama_part='"+namaP+"' && stat='"+stat+"';");
+                            if(rs2.next()){
+                                rs1 = stmt.executeQuery("SELECT ok,ng,runner,bonggol FROM stok_barang_fresh WHERE nama_part='"+namaP+"' && stat='"+stat+"';");
+                                while(rs1.next()){
+                                    nA = rs1.getInt(1);
+                                    nB = rs1.getInt(2);
+                                    nC = rs1.getFloat(3);
+                                    nD = rs1.getFloat(4);
+                                }
+                                int nOK = Integer.parseInt(actual);
+                                int nNG = Integer.parseInt(ng);
+                                float nRu = Float.parseFloat(beratRunner);
+                                int totOK = nA + nOK;
+                                int totNG = nB + nNG;
+                                float totRU = nC + nRu;
+                                float totBong = nD + bonggol;
+                                stmt.executeUpdate("INSERT INTO laporan_produksi(nama_part, date, target, actual_produksi, ng_produksi, total_ouput, kwh_awal, kwh_akhir, total_kwh,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,operator,time,cav,keterangan,no_mesin,onhold,bonggol,stat)" +
+                                        "VALUES ('"+namaP+"','"+dt+"','"+targetP+"','"+actual+"','"+ng+"','"+tot_prod+"','"+kwhAw+"','"+kwhAk+"','"+kwhTot+"','"+shift+"','"+beratPart+"','"+beratRunner+"','"+tb+"','"+cti+"','"+nop+"','"+tprod+"','"+cav+"','"+ket+"','"+nomes+"','"+oh+"','"+bonggol+"','"+stat+"');");
+                                stmt.executeUpdate("UPDATE stok_barang_fresh SET ok ='"+totOK+"',ng='"+totNG+"',runner='"+totRU+"',bonggol='"+totBong+"',stat='"+stat+"' WHERE nama_part='"+namaP+"';");
+                                ohold();
+                                con.close();
+                                disabled();
+                                allow_upLP.setSelected(false);
+                                alert al = new alert();
+                                al.info_upload();
+                            }
+                            else if(!rs2.next()){
+                                alert al = new alert();
+                                al.warn_dataisondatabase();
+                            }
                         }
-                        int nOK = Integer.parseInt(actual);
-                        int nNG = Integer.parseInt(ng);
-                        float nRu = Float.parseFloat(beratRunner);
-                        int totOK = nA + nOK;
-                        int totNG = nB + nNG;
-                        float totRU = nC + nRu;
-                        stmt.executeUpdate("INSERT INTO laporan_produksi(nama_part, date, target, actual_produksi, ng_produksi, total_ouput, kwh_awal, kwh_akhir, total_kwh,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,operator,time,cav,keterangan,no_mesin,onhold)" +
-                                "VALUES ('"+namaP+"','"+dt+"','"+targetP+"','"+actual+"','"+ng+"','"+tot_prod+"','"+kwhAw+"','"+kwhAk+"','"+kwhTot+"','"+shift+"','"+beratPart+"','"+beratRunner+"','"+tb+"','"+cti+"','"+nop+"','"+tprod+"','"+cav+"','"+ket+"','"+nomes+"','"+oh+"');");
-                        stmt.executeUpdate("UPDATE stok_barang_fresh SET ok ='"+totOK+"',ng='"+totNG+"',runner='"+totRU+"' WHERE nama_part='"+namaP+"';");
-                        ohold();
-                        con.close();
-                        disabled();
-                        allow_upLP.setSelected(false);
-                        alert al = new alert();
-                        al.info_upload();
+                        else if(stat.equals("WIP")){
+                            rs2 = stmt.executeQuery("SELECT ok,ng,runner,bonggol FROM stok_barang_fresh WHERE nama_part='"+namaP+"' && stat='"+stat+"';");
+                            if(rs2.next()){
+                                rs1 = stmt.executeQuery("SELECT wip,ng,runner,bonggol FROM stok_barang_fresh WHERE nama_part='"+namaP+"' WHERE stat='"+stat+"';");
+                                while(rs1.next()){
+                                    nA = rs1.getInt(1);
+                                    nB = rs1.getInt(2);
+                                    nC = rs1.getFloat(3);
+                                    nD = rs1.getFloat(4);
+                                }
+                                int nOK = Integer.parseInt(actual);
+                                int nNG = Integer.parseInt(ng);
+                                float nRu = Float.parseFloat(beratRunner);
+                                int totOK = nA + nOK;
+                                int totNG = nB + nNG;
+                                float totRU = nC + nRu;
+                                float totBong = nD + bonggol;
+                                stmt.executeUpdate("INSERT INTO laporan_produksi(nama_part, date, target, actual_produksi, ng_produksi, total_ouput, kwh_awal, kwh_akhir, total_kwh,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,operator,time,cav,keterangan,no_mesin,onhold,bonggol,stat)" +
+                                        "VALUES ('"+namaP+"','"+dt+"','"+targetP+"','"+actual+"','"+ng+"','"+tot_prod+"','"+kwhAw+"','"+kwhAk+"','"+kwhTot+"','"+shift+"','"+beratPart+"','"+beratRunner+"','"+tb+"','"+cti+"','"+nop+"','"+tprod+"','"+cav+"','"+ket+"','"+nomes+"','"+oh+"','"+bonggol+"','"+stat+"');");
+                                stmt.executeUpdate("UPDATE stok_barang_fresh SET wip ='"+totOK+"',ng='"+totNG+"',runner='"+totRU+"',bonggol='"+totBong+"',stat='"+stat+"' WHERE nama_part='"+namaP+"';");
+                                ohold();
+                                con.close();
+                                disabled();
+                                allow_upLP.setSelected(false);
+                                alert al = new alert();
+                                al.info_upload();
+                            }
+                            else if (!rs2.next()){
+                                alert al = new alert();
+                                al.warn_dataisondatabase();
+                            }
+                        }
+
                     }
                     else if(!rs.next()){
-                        stmt.executeUpdate("INSERT INTO laporan_produksi(nama_part, date, target, actual_produksi, ng_produksi, total_ouput, kwh_awal, kwh_akhir, total_kwh,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,operator,time,cav,keterangan,no_mesin,onhold)" +
-                                "VALUES ('"+namaP+"','"+dt+"','"+targetP+"','"+actual+"','"+ng+"','"+tot_prod+"','"+kwhAw+"','"+kwhAk+"','"+kwhTot+"','"+shift+"','"+beratPart+"','"+beratRunner+"','"+tb+"','"+cti+"','"+nop+"','"+tprod+"','"+cav+"','"+ket+"','"+nomes+"','"+oh+"');");
-                        stmt.executeUpdate("INSERT INTO stok_barang_fresh(nama_part, ok,ng,runner) VALUES ('"+namaP+"','"+actual+"','"+ng+"','"+beratRunner+"');");
-                        ohold();
-                        con.close();
-                        disabled();
-                        allow_upLP.setSelected(false);
-                        alert al = new alert();
-                        al.info_upload();
+                        if(stat.equals("FG")){
+                            stmt.executeUpdate("INSERT INTO laporan_produksi(nama_part, date, target, actual_produksi, ng_produksi, total_ouput, kwh_awal, kwh_akhir, total_kwh,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,operator,time,cav,keterangan,no_mesin,onhold,bonggol,stat)" +
+                                    "VALUES ('"+namaP+"','"+dt+"','"+targetP+"','"+actual+"','"+ng+"','"+tot_prod+"','"+kwhAw+"','"+kwhAk+"','"+kwhTot+"','"+shift+"','"+beratPart+"','"+beratRunner+"','"+tb+"','"+cti+"','"+nop+"','"+tprod+"','"+cav+"','"+ket+"','"+nomes+"','"+oh+"','"+bonggol+"','"+stat+"');");
+                            stmt.executeUpdate("INSERT INTO stok_barang_fresh(nama_part, ok,ng,runner,bonggol,stat) VALUES ('"+namaP+"','"+actual+"','"+ng+"','"+beratRunner+"','"+bonggol+"','"+stat+"');");
+                            ohold();
+                            con.close();
+                            disabled();
+                            allow_upLP.setSelected(false);
+                            alert al = new alert();
+                            al.info_upload();
+                        }
+                        else if(stat.equals("WIP")){
+                            stmt.executeUpdate("INSERT INTO laporan_produksi(nama_part, date, target, actual_produksi, ng_produksi, total_ouput, kwh_awal, kwh_akhir, total_kwh,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,operator,time,cav,keterangan,no_mesin,onhold,bonggol,stat)" +
+                                    "VALUES ('"+namaP+"','"+dt+"','"+targetP+"','"+actual+"','"+ng+"','"+tot_prod+"','"+kwhAw+"','"+kwhAk+"','"+kwhTot+"','"+shift+"','"+beratPart+"','"+beratRunner+"','"+tb+"','"+cti+"','"+nop+"','"+tprod+"','"+cav+"','"+ket+"','"+nomes+"','"+oh+"','"+bonggol+"','"+stat+"');");
+                            stmt.executeUpdate("INSERT INTO stok_barang_fresh(nama_part, wip,ng,runner,bonggol,stat) VALUES ('"+namaP+"','"+actual+"','"+ng+"','"+beratRunner+"','"+bonggol+"','"+stat+"');");
+                            ohold();
+                            con.close();
+                            disabled();
+                            allow_upLP.setSelected(false);
+                            alert al = new alert();
+                            al.info_upload();
+                        }
+
                     }
                 }
 
@@ -1103,6 +1274,8 @@ public class produksiControl implements Initializable{
             String targetP = tf_targetLAP.getText();
             String actual = tf_actualLAP.getText();
             String ng = tf_ngLAP.getText();
+            String stat = cb_untuk.getValue();
+            float bonggol = Float.parseFloat(tf_bonggolLAP.getText());
             //int a = Integer.parseInt(targetP);
             int a = Integer.parseInt(actual);
             int b = Integer.parseInt(ng);
@@ -1131,6 +1304,7 @@ public class produksiControl implements Initializable{
             int nA = 0;
             int nB = 0;
             float nC = 0;
+            float nD = 0;
             //System.out.println(shift);
             if(allow_upLP.isSelected()){
                 try {
@@ -1139,44 +1313,102 @@ public class produksiControl implements Initializable{
                     Statement stmt = null;
                     ResultSet rs = null;
                     ResultSet rs1 = null;
+                    ResultSet rs2 = null;
                     con = connector.setConnection();
                     stmt = con.createStatement();
                     rs = stmt.executeQuery("SELECT nama_part FROM stok_barang_fresh WHERE nama_part='"+namaP+"';");
                     if(rs.next()){
-                        rs1 = stmt.executeQuery("SELECT ok,ng,runner FROM stok_barang_fresh WHERE nama_part='"+namaP+"';");
-                        while(rs1.next()){
-                            nA = rs1.getInt(1);
-                            nB = rs1.getInt(2);
-                            nC = rs1.getFloat(3);
+                        if(stat.equals("FG")){
+                            rs2 = stmt.executeQuery("SELECT ok,ng,runner,bonggol FROM stok_barang_fresh WHERE nama_part='"+namaP+"' && stat='"+stat+"';");
+                            if(rs2.next()){
+                                rs1 = stmt.executeQuery("SELECT ok,ng,runner,bonggol FROM stok_barang_fresh WHERE nama_part='"+namaP+"' && stat='"+stat+"';");
+                                while(rs1.next()){
+                                    nA = rs1.getInt(1);
+                                    nB = rs1.getInt(2);
+                                    nC = rs1.getFloat(3);
+                                    nD = rs1.getFloat(4);
+                                }
+                                int nOK = Integer.parseInt(actual);
+                                int nNG = Integer.parseInt(ng);
+                                float nRu = Float.parseFloat(beratRunner);
+                                int totOK = nA + nOK;
+                                int totNG = nB + nNG;
+                                float totRU = nC + nRu;
+                                float totBong = nD + bonggol;
+                                stmt.executeUpdate("INSERT INTO laporan_produksi(nama_part, date, target, actual_produksi, ng_produksi, total_ouput, kwh_awal, kwh_akhir, total_kwh,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,operator,time,cav,keterangan,no_mesin,onhold,bonggol,stat)" +
+                                        "VALUES ('"+namaP+"','"+dt+"','"+targetP+"','"+actual+"','"+ng+"','"+tot_prod+"','"+kwhAw+"','"+kwhAk+"','"+kwhTot+"','"+shift+"','"+beratPart+"','"+beratRunner+"','"+tb+"','"+cti+"','"+nop+"','"+tprod+"','"+cav+"','"+ket+"','"+nomes+"','"+oh+"','"+bonggol+"','"+stat+"');");
+                                stmt.executeUpdate("UPDATE stok_barang_fresh SET ok ='"+totOK+"',ng='"+totNG+"',runner='"+totRU+"',bonggol='"+totBong+"',stat='"+stat+"' WHERE nama_part='"+namaP+"';");
+                                ohold();
+                                con.close();
+                                disabled();
+                                allow_upLP.setSelected(false);
+                                alert al = new alert();
+                                al.info_upload();
+                            }
+                            else if(!rs2.next()){
+                                alert al = new alert();
+                                al.warn_dataisondatabase();
+                            }
                         }
-                        int nOK = Integer.parseInt(actual);
-                        int nNG = Integer.parseInt(ng);
-                        float nRu = Float.parseFloat(beratRunner);
-                        int totOK = nA + nOK;
-                        int totNG = nB + nNG;
-                        float totRU = nC + nRu;
-                        stmt.executeUpdate("INSERT INTO laporan_produksi(nama_part, date, target, actual_produksi, ng_produksi, total_ouput, kwh_awal, kwh_akhir, total_kwh,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,operator,time,cav,keterangan,no_mesin,onhold)" +
-                                "VALUES ('"+namaP+"','"+dt+"','"+targetP+"','"+actual+"','"+ng+"','"+tot_prod+"','"+kwhAw+"','"+kwhAk+"','"+kwhTot+"','"+shift+"','"+beratPart+"','"+beratRunner+"','"+tb+"','"+cti+"','"+nop+"','"+tprod+"','"+cav+"','"+ket+"','"+nomes+"','"+oh+"');");
-                        stmt.executeUpdate("UPDATE stok_barang_fresh SET ok ='"+totOK+"',ng='"+totNG+"',runner='"+totRU+"' WHERE nama_part='"+namaP+"';");
-                        con.close();
-                        ohold();
-                        disabled();
-                        allow_upLP.setSelected(false);
-                        alert al = new alert();
-                        al.info_upload();
+                        else if(stat.equals("WIP")){
+                            rs2 = stmt.executeQuery("SELECT ok,ng,runner,bonggol FROM stok_barang_fresh WHERE nama_part='"+namaP+"' && stat='"+stat+"';");
+                            if(rs2.next()){
+                                rs1 = stmt.executeQuery("SELECT wip,ng,runner,bonggol FROM stok_barang_fresh WHERE nama_part='"+namaP+"' WHERE stat='"+stat+"';");
+                                while(rs1.next()){
+                                    nA = rs1.getInt(1);
+                                    nB = rs1.getInt(2);
+                                    nC = rs1.getFloat(3);
+                                    nD = rs1.getFloat(4);
+                                }
+                                int nOK = Integer.parseInt(actual);
+                                int nNG = Integer.parseInt(ng);
+                                float nRu = Float.parseFloat(beratRunner);
+                                int totOK = nA + nOK;
+                                int totNG = nB + nNG;
+                                float totRU = nC + nRu;
+                                float totBong = nD + bonggol;
+                                stmt.executeUpdate("INSERT INTO laporan_produksi(nama_part, date, target, actual_produksi, ng_produksi, total_ouput, kwh_awal, kwh_akhir, total_kwh,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,operator,time,cav,keterangan,no_mesin,onhold,bonggol,stat)" +
+                                        "VALUES ('"+namaP+"','"+dt+"','"+targetP+"','"+actual+"','"+ng+"','"+tot_prod+"','"+kwhAw+"','"+kwhAk+"','"+kwhTot+"','"+shift+"','"+beratPart+"','"+beratRunner+"','"+tb+"','"+cti+"','"+nop+"','"+tprod+"','"+cav+"','"+ket+"','"+nomes+"','"+oh+"','"+bonggol+"','"+stat+"');");
+                                stmt.executeUpdate("UPDATE stok_barang_fresh SET wip ='"+totOK+"',ng='"+totNG+"',runner='"+totRU+"',bonggol='"+totBong+"',stat='"+stat+"' WHERE nama_part='"+namaP+"';");
+                                ohold();
+                                con.close();
+                                disabled();
+                                allow_upLP.setSelected(false);
+                                alert al = new alert();
+                                al.info_upload();
+                            }
+                            else if (!rs2.next()){
+                                alert al = new alert();
+                                al.warn_dataisondatabase();
+                            }
+                        }
+
                     }
                     else if(!rs.next()){
-                        stmt.executeUpdate("INSERT INTO laporan_produksi(nama_part, date, target, actual_produksi, ng_produksi, total_ouput, kwh_awal, kwh_akhir, total_kwh,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,operator,time,cav,keterangan,no_mesin,onhold)" +
-                                "VALUES ('"+namaP+"','"+dt+"','"+targetP+"','"+actual+"','"+ng+"','"+tot_prod+"','"+kwhAw+"','"+kwhAk+"','"+kwhTot+"','"+shift+"','"+beratPart+"','"+beratRunner+"','"+tb+"','"+cti+"','"+nop+"','"+tprod+"','"+cav+"','"+ket+"','"+nomes+"','"+oh+"');");
-                        stmt.executeUpdate("INSERT INTO stok_barang_fresh(nama_part, ok,ng,runner) VALUES ('"+namaP+"','"+actual+"','"+ng+"','"+beratRunner+"');");
-                        con.close();
-                        ohold();
-                        disabled();
-                        allow_upLP.setSelected(false);
-                        alert al = new alert();
-                        al.info_upload();
-                    }
+                        if(stat.equals("FG")){
+                            stmt.executeUpdate("INSERT INTO laporan_produksi(nama_part, date, target, actual_produksi, ng_produksi, total_ouput, kwh_awal, kwh_akhir, total_kwh,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,operator,time,cav,keterangan,no_mesin,onhold,bonggol,stat)" +
+                                    "VALUES ('"+namaP+"','"+dt+"','"+targetP+"','"+actual+"','"+ng+"','"+tot_prod+"','"+kwhAw+"','"+kwhAk+"','"+kwhTot+"','"+shift+"','"+beratPart+"','"+beratRunner+"','"+tb+"','"+cti+"','"+nop+"','"+tprod+"','"+cav+"','"+ket+"','"+nomes+"','"+oh+"','"+bonggol+"','"+stat+"');");
+                            stmt.executeUpdate("INSERT INTO stok_barang_fresh(nama_part, ok,ng,runner,bonggol,stat) VALUES ('"+namaP+"','"+actual+"','"+ng+"','"+beratRunner+"','"+bonggol+"','"+stat+"');");
+                            ohold();
+                            con.close();
+                            disabled();
+                            allow_upLP.setSelected(false);
+                            alert al = new alert();
+                            al.info_upload();
+                        }
+                        else if(stat.equals("WIP")){
+                            stmt.executeUpdate("INSERT INTO laporan_produksi(nama_part, date, target, actual_produksi, ng_produksi, total_ouput, kwh_awal, kwh_akhir, total_kwh,shift,berat_part_act,berat_runner_act,berat_total_act,cti_act,operator,time,cav,keterangan,no_mesin,onhold,bonggol,stat)" +
+                                    "VALUES ('"+namaP+"','"+dt+"','"+targetP+"','"+actual+"','"+ng+"','"+tot_prod+"','"+kwhAw+"','"+kwhAk+"','"+kwhTot+"','"+shift+"','"+beratPart+"','"+beratRunner+"','"+tb+"','"+cti+"','"+nop+"','"+tprod+"','"+cav+"','"+ket+"','"+nomes+"','"+oh+"','"+bonggol+"','"+stat+"');");
+                            stmt.executeUpdate("INSERT INTO stok_barang_fresh(nama_part, wip,ng,runner,bonggol,stat) VALUES ('"+namaP+"','"+actual+"','"+ng+"','"+beratRunner+"','"+bonggol+"','"+stat+"');");
+                            ohold();
+                            con.close();
+                            disabled();
+                            allow_upLP.setSelected(false);
+                            alert al = new alert();
+                            al.info_upload();
+                        }
 
+                    }
                 }
 
                 catch (Exception e) {
@@ -1575,14 +1807,18 @@ public class produksiControl implements Initializable{
     //Sub Assy Region
     @FXML protected void sa_upWIP(){
         try {
+            Calendar time = Calendar.getInstance();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            String date =format.format(time.getTime());
             String kodeP = sa_kodepart.getText();
             String jumlah = sa_jumlahwip.getText();
             String namaPa = null;
-            int ok = 0;
-            int tot = 0;
-            int oko = Integer.parseInt(jumlah);
-            int ok1 = 0;
-            int tot1 = 0;
+            int wipUSER = Integer.parseInt(jumlah);
+            int wipDB = 0;
+            int wipStok = 0;
+            int wip_total_stok =0;
+            int wip_total_db = 0;
+
             Class.forName("com.lpc.driver.connector");
             Connection con = null;
             Statement stmt = null;
@@ -1590,35 +1826,56 @@ public class produksiControl implements Initializable{
             ResultSet rs1 = null;
             ResultSet rs2 = null;
             ResultSet rs3 = null;
+            ResultSet rs4 = null;
+            ResultSet rs5 = null;
             con = connector.setConnection();
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT a.nama_part FROM list_part a,stok_barang_fresh b WHERE code_part='"+kodeP+"' && a.nama_part=b.nama_part;");
-            if(rs.next()){
-                rs2 = stmt.executeQuery("SELECT nama_part FROM list_part WHERE code_part='"+kodeP+"';");
-                while (rs2.next()){
-                    namaPa = rs2.getString(1);
+
+
+            rs5 = stmt.executeQuery("SELECT a.nama_part FROM list_part a,stok_barang_fresh b WHERE code_part='"+kodeP+"' && a.nama_part=b.nama_part && stat='WIP';");
+            if(rs5.next()){
+                rs = stmt.executeQuery("SELECT a.nama_part FROM list_part a,stok_barang_fresh b WHERE code_part='"+kodeP+"' && a.nama_part=b.nama_part && stat='WIP';");
+                if(rs.next()){
+                    rs2 = stmt.executeQuery("SELECT nama_part FROM list_part WHERE code_part='"+kodeP+"';");
+                    while (rs2.next()){
+                        namaPa = rs2.getString(1);
+                    }
+                    rs1 = stmt.executeQuery("SELECT wip FROM stok_barang_fresh WHERE nama_part='"+namaPa+"';");
+                    while(rs1.next()){
+                        wipDB = rs1.getInt(1);
+                    }
+                    wip_total_db = wipDB - wipUSER;
+                    stmt.executeUpdate("INSERT INTO laporan_wip(nama_part, tanggal, wip) VALUES ('"+namaPa+"','"+date+"','"+wipUSER+"');");
+                    rs3 = stmt.executeQuery("SELECT * FROM stok_barang_wip WHERE nama_part='"+namaPa+"';");
+                    if(rs3.next()){
+                        rs4 = stmt.executeQuery("SELECT wip FROM stok_barang_wip WHERE nama_part='"+namaPa+"';");
+                        while (rs4.next()){
+                            wipStok = rs4.getInt(1);
+                        }
+                        wip_total_stok = wipStok + wipUSER;
+                        stmt.executeUpdate("UPDATE stok_barang_wip SET wip='"+wip_total_stok+"' WHERE nama_part='"+namaPa+"';");
+                        stmt.executeUpdate("UPDATE stok_barang_fresh SET wip='"+wip_total_db+"' WHERE nama_part='"+namaPa+"';");
+                    }
+                    else if (!rs3.next()){
+                        stmt.executeUpdate("INSERT INTO stok_barang_wip(nama_part, wip) VALUES ('"+namaPa+"','"+wipUSER+"');");
+                        stmt.executeUpdate("UPDATE stok_barang_fresh SET wip='"+wip_total_db+"' WHERE nama_part='"+namaPa+"';");
+                    }
+
+                    con.close();
+                    alert al = new alert();
+                    al.info_upload();
                 }
-                rs1 = stmt.executeQuery("SELECT ok FROM stok_barang_fresh WHERE nama_part='"+namaPa+"';");
-                while (rs1.next()){
-                    ok = rs1.getInt(1);
+                else{
+                    con.close();
+                    alert al = new alert();
+                    al.error_upload();
                 }
-                tot = ok - oko;
-                rs3 = stmt.executeQuery("SELECT wip FROM stok_barang_fresh WHERE nama_part='"+namaPa+"';");
-                while(rs3.next()){
-                    ok1 = rs3.getInt(1);
-                }
-                tot1 = ok1 + oko;
-                stmt.executeUpdate("UPDATE stok_barang_fresh SET wip='"+tot1+"',ok='"+tot+"' WHERE nama_part='"+namaPa+"';");
-                stmt.executeUpdate("INSERT INTO stok_barang_wip(nama_part, wip) VALUES ('"+namaPa+"','"+oko+"')");
-                con.close();
-                alert al = new alert();
-                al.info_upload();
             }
-            else{
-                con.close();
+            else if(!rs5.next()){
                 alert al = new alert();
-                al.error_upload();
+                al.warn_wipassy();
             }
+
         } catch (Exception e) {
             System.out.print(e);
             alert al = new alert();
@@ -1641,14 +1898,14 @@ public class produksiControl implements Initializable{
             ResultSet rs2 = null;
             con = connector.setConnection();
             stmt =con.createStatement();
-            rs = stmt.executeQuery("SELECT a.nama_part,b.nama_part FROM list_part a,stok_barang_fresh b WHERE a.code_part='"+kode+"' && a.nama_part = b.nama_part;");
+            rs = stmt.executeQuery("SELECT a.nama_part,b.nama_part FROM list_part a,stok_barang_wip b WHERE a.code_part='"+kode+"' && a.nama_part = b.nama_part;");
             if(rs.next()){
                 rs1 = stmt.executeQuery("SELECT nama_part FROM list_part WHERE code_part='"+kode+"';");
                 while (rs1.next()){
                     nama_part = rs1.getString(1);
                 }
-                rs2 = stmt.executeQuery("SELECT nama_part,wip FROM stok_barang_fresh WHERE nama_part='"+nama_part+"';");
-                while (rs2.next()){
+                    rs2 = stmt.executeQuery("SELECT nama_part,wip FROM stok_barang_wip WHERE nama_part='"+nama_part+"';");
+                    while (rs2.next()){
                     modl_assy.addAll(new model_subassy(rs2.getString(1),rs2.getString(2)));
                     sa_namapCOL.setCellValueFactory(cellData -> cellData.getValue().nama_partProperty());
                     sa_wipCOL.setCellValueFactory(cellData -> cellData.getValue().wipProperty());
@@ -1705,16 +1962,17 @@ public class produksiControl implements Initializable{
                     nB = rs2.getInt(1);
                     nBB = rs2.getInt(2);
                 }
-                rs3 = stmt.executeQuery("SELECT wip FROM stok_barang_fresh WHERE nama_part='"+namaP+"';");
+                rs3 = stmt.executeQuery("SELECT wip FROM stok_barang_wip WHERE nama_part='"+namaP+"';");
                 while (rs3.next()){
                     zA = rs3.getInt(1);
                 }
+                zB =nA+nAA;
                 //zTot = zA - nA;
                 nTot = nA + nB;
                 nC = nA + nAA;
                 nCC = nAA + nBB;
-                zTot = zA - nC;
-                stmt.executeUpdate("UPDATE stok_barang_fresh set wip='"+zTot+"' WHERE nama_part='"+namaP+"';");
+                zTot = zA - zB;
+                stmt.executeUpdate("UPDATE stok_barang_wip set wip='"+zTot+"' WHERE nama_part='"+namaP+"';");
                 stmt.executeUpdate("UPDATE stok_barang_subassy SET stok='"+nTot+"',ng='"+nCC+"' WHERE nama_part='"+namaP+"';");
                 stmt.executeUpdate("INSERT INTO laporan_assy(nama_part, jumlah, tanggal,ng) VALUES ('"+namaP+"','"+nA+"','"+date+"','"+nAA+"');");
                 //stmt.executeUpdate("INSERT INTO stok_barang_wip(nama_part, wip) VALUES('"+namaP+"','"+nA+"');");
@@ -1723,12 +1981,13 @@ public class produksiControl implements Initializable{
                 al.info_upload();
             }
             else if (!rs1.next()){
-                rs3 = stmt.executeQuery("SELECT wip FROM stok_barang_fresh WHERE nama_part='"+namaP+"';");
+                rs3 = stmt.executeQuery("SELECT wip FROM stok_barang_wip WHERE nama_part='"+namaP+"';");
                 while (rs3.next()){
                     zA = rs3.getInt(1);
                 }
-                zTot = zA - nA;
-                stmt.executeUpdate("UPDATE stok_barang_fresh set wip='"+zTot+"' WHERE nama_part='"+namaP+"';");
+                zB = nA+nAA;
+                zTot = zA - zB;
+                stmt.executeUpdate("UPDATE stok_barang_wip set wip='"+zTot+"' WHERE nama_part='"+namaP+"';");
                 stmt.executeUpdate("INSERT INTO stok_barang_subassy(nama_part,stok,ng) VALUES ('"+namaP+"','"+nA+"','"+nAA+"');");
                 stmt.executeUpdate("INSERT INTO laporan_assy(nama_part, jumlah, tanggal,ng) VALUES ('"+namaP+"','"+nA+"','"+date+"','"+nAA+"');");
                 //stmt.executeUpdate("INSERT INTO stok_barang_wip(nama_part, wip) VALUES('"+namaP+"','"+nA+"');");
@@ -1743,7 +2002,7 @@ public class produksiControl implements Initializable{
         }
     }
 
-
+/*
     //Stok NON Region
     public ObservableList<stok_nonmodel1> getStok_non1(){
         return stok_non1;
@@ -2016,7 +2275,7 @@ public class produksiControl implements Initializable{
         }
 
     }
-
+*/
     //ONHOLD Region
     @FXML private void cek_onhold_search(){
         try {
@@ -2155,9 +2414,12 @@ public class produksiControl implements Initializable{
                 aaa =0;
                 bbb= 0;
                 ccc =0;
+                int hj = 0;
+                int hj1 = 0;
+                int hj2 = 0;
                 stmt.executeUpdate("INSERT INTO laporan_judgement(nama_part, ok, ng, stat) VALUES ('"+np+"','"+a+"','"+aa+"','"+stat+"');");
                 if(stat.equals("Assy")){
-                    rs = stmt.executeQuery("SELECT wip,ng,on_hold FROM stok_barang_fresh WHERE nama_part='"+np+"';");
+                    rs = stmt.executeQuery("SELECT b.wip,a.ng,a.on_hold FROM stok_barang_fresh a,stok_barang_wip b WHERE nama_part='"+np+"';");
                     while(rs.next()){
                         b = rs.getInt(1);
                         bb = rs.getInt(2);
@@ -2168,49 +2430,57 @@ public class produksiControl implements Initializable{
                     oh1 = a+aa;
                     oh2 = oh - oh1;
 
-                    rs1 = stmt.executeQuery("SELECT nama_part FROM stok_barang_fresh WHERE nama_part='"+np+"';");
+                    rs1 = stmt.executeQuery("SELECT nama_part FROM stok_barang_wip WHERE nama_part='"+np+"';");
                     if(rs1.next()){
-                        stmt.executeUpdate("UPDATE stok_barang_fresh SET wip='"+c+"',ng='"+cc+"',on_hold='"+oh2+"' WHERE nama_part='"+np+"' ;");
-                        stmt.executeUpdate("INSERT INTO stok_barang_wip(nama_part, wip) VALUES ('"+np+"','"+a+"');");
+                        stmt.executeUpdate("UPDATE stok_barang_fresh SET ng='"+cc+"',on_hold='"+oh2+"' WHERE nama_part='"+np+"' ;");
+                        stmt.executeUpdate("UPDATE stok_barang_wip SET wip='"+c+"' WHERE nama_part='"+np+"' ;");
+                        //stmt.executeUpdate("INSERT INTO stok_barang_wip(nama_part, wip) VALUES ('"+np+"','"+a+"');");
+                        stmt.executeUpdate("INSERT INTO laporan_wip(nama_part, tanggal, wip) VALUES ('"+np+"','"+dt+"','"+c+"');");
                     }
                     else if(!rs1.next()){
-                        stmt.executeUpdate("INSERT INTO stok_barang_fresh(nama_part,wip,ng)VALUES ('"+np+"','"+a+"','"+aa+"');");
-                        stmt.executeUpdate("INSERT INTO stok_barang_wip(nama_part, wip) VALUES ('"+np+"','"+a+"');");
+                        stmt.executeUpdate("INSERT INTO stok_barang_wip(nama_part,wip)VALUES ('"+np+"','"+a+"');");
+                        stmt.executeUpdate("INSERT INTO laporan_wip(nama_part, tanggal, wip) VALUES ('"+np+"','"+dt+"','"+c+"');");
+                        //stmt.executeUpdate("INSERT INTO stok_barang_wip(nama_part, wip) VALUES ('"+np+"','"+a+"');");
                     }
                     //stmt.executeUpdate("")
                 }
                 else if(stat.equals("FG")){
-                    stmt.executeUpdate("INSERT INTO stok_wfg(nama_part, jumlah, tanggal_diterima, picp, picw, ket) VALUES('"+np+"','"+a+"','"+dt+"','"+picp+"','"+picw+"','"+ket+"');");
-                    rs = stmt.executeQuery("SELECT nama_part FROM stok_wfg_total WHERE nama_part='"+np+"' && stat='non';");
+                    //stmt.executeUpdate("INSERT INTO stok_wfg(nama_part, jumlah, tanggal_diterima, picp, picw, ket) VALUES('"+np+"','"+a+"','"+dt+"','"+picp+"','"+picw+"','"+ket+"');");
+                    rs = stmt.executeQuery("SELECT nama_part FROM stok_barang_fresh WHERE nama_part='"+np+"' && stat='FG';");
                     if(rs.next()){
-                        rs1 = stmt.executeQuery("SELECT ng,on_hold FROM stok_barang_fresh WHERE nama_part='"+np+"';");
+                        rs1 = stmt.executeQuery("SELECT ok,ng,on_hold FROM stok_barang_fresh WHERE nama_part='"+np+"';");
                         while(rs1.next()){
-                            bb = rs1.getInt(1);
-                            oh = rs1.getInt(2);
+                            bbb = rs1.getInt(1);
+                            bb = rs1.getInt(2);
+                            oh = rs1.getInt(3);
                         }
+                        /*
                         rs2 = stmt.executeQuery("SELECT jumlah FROM stok_wfg_total WHERE nama_part ='"+np+"';");
                         while(rs2.next()){
                             bbb = rs2.getInt(1);
                         }
+                        */
                         aaa = a;
                         ccc = aaa + bbb;
                         cc = aa+bb;
                         oh1 = a + aa;
                         oh2 = oh - oh1;
-                        stmt.executeUpdate("UPDATE stok_wfg_total SET jumlah='"+ccc+"' WHERE nama_part='"+np+"' && stat='non';");
-                        stmt.executeUpdate("UPDATE stok_barang_fresh SET ng='"+cc+"',on_hold='"+oh2+"' WHERE nama_part='"+np+"';");
+                        //stmt.executeUpdate("UPDATE stok_wfg_total SET jumlah='"+ccc+"' WHERE nama_part='"+np+"' && stat='non';");
+                        stmt.executeUpdate("UPDATE stok_barang_fresh SET ok='"+ccc+"',ng='"+cc+"',on_hold='"+oh2+"' WHERE nama_part='"+np+"';");
                     }
                     else if(!rs.next()){
-                        rs1 = stmt.executeQuery("SELECT ng,on_hold FROM stok_barang_fresh WHERE nama_part='"+np+"';");
+                        rs1 = stmt.executeQuery("SELECT ok,ng,on_hold FROM stok_barang_fresh WHERE nama_part='"+np+"';");
                         while(rs1.next()){
-                            bb = rs1.getInt(1);
-                            oh = rs1.getInt(2);
+                            aaa= rs1.getInt(1);
+                            bb = rs1.getInt(2);
+                            oh = rs1.getInt(3);
                         }
+                        ccc = aaa+a;
                         cc = aa+bb;
                         oh1 = a + aa;
                         oh2 = oh - oh1;
-                        stmt.executeUpdate("UPDATE stok_barang_fresh set ng='"+cc+"',on_hold='"+oh2+"' WHERE nama_part='"+np+"';");
-                        stmt.executeUpdate("INSERT INTO stok_wfg_total(nama_part, jumlah, stat) VALUES ('"+np+"','"+a+"','non');");
+                        stmt.executeUpdate("UPDATE stok_barang_fresh set ok='"+ccc+"' ,ng='"+cc+"',on_hold='"+oh2+"' WHERE nama_part='"+np+"';");
+                        //stmt.executeUpdate("INSERT INTO stok_wfg_total(nama_part, jumlah, stat) VALUES ('"+np+"','"+a+"','non');");
                     }
                 }
             }

@@ -18,8 +18,9 @@ public class cekprod {
     private final StringProperty kwh;
     private final StringProperty cav;
     private final StringProperty nomesin;
+    private final StringProperty stat;
 
-    public cekprod(String nama_part,String operator,String tanggal,String jam,String shift,String beratp,String beratr,String beratt,String cti,String good,String ng,String kwh,String cav,String nomes){
+    public cekprod(String nama_part,String operator,String tanggal,String jam,String shift,String beratp,String beratr,String beratt,String cti,String good,String ng,String kwh,String cav,String nomes,String st){
         this.nama_part = new SimpleStringProperty(nama_part);
         this.operator = new SimpleStringProperty(operator);
         this.tanggal = new SimpleStringProperty(tanggal);
@@ -34,6 +35,7 @@ public class cekprod {
         this.kwh = new SimpleStringProperty(kwh);
         this.cav = new SimpleStringProperty(cav);
         this.nomesin = new SimpleStringProperty(nomes);
+        this.stat = new SimpleStringProperty(st);
     }
 
     public StringProperty nama_partProperty() {
@@ -91,6 +93,10 @@ public class cekprod {
         return nomesin;
     }
 
+    public StringProperty statProperty() {
+        return stat;
+    }
+
     public String getCav(){
         return cav.get();
     }
@@ -106,5 +112,9 @@ public class cekprod {
     }
     public String getOP(){
         return operator.get();
+    }
+
+    public String getStat() {
+        return stat.get();
     }
 }

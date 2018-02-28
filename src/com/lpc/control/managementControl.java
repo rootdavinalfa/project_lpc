@@ -55,10 +55,51 @@ public class managementControl implements Initializable{
     @FXML private TableColumn<list_wait_po,String> Waittanggalpo_materialCOL;
     @FXML private TableColumn<list_wait_po,String> Waithargapo_materialCOL;
 
+    //Stok Region (NON)
+    @FXML private Label stok_nontgl;
+    @FXML private TextField stok_nonNP;
+    @FXML private TextField stok_nonPICP;
+    @FXML private TextField stok_nonPICW;
+    @FXML private TextField stok_nonJUM;
+    @FXML private TextArea stok_nonKET;
+    @FXML private TableView<stok_nonmodel> stok_nonTV;
+    @FXML private TableColumn<stok_nonmodel,String> stok_nonNPCOL;
+    @FXML private TableColumn<stok_nonmodel,String> stok_nonPICPCOL;
+    @FXML private TableColumn<stok_nonmodel,String> stok_nonPICWCOL;
+    @FXML private TableColumn<stok_nonmodel,String> stok_nonJMLCOL;
+    @FXML private TableView<stok_nonmodel1> stok_nonTV1;
+    @FXML private TableColumn<stok_nonmodel1,String> stok_nonNPCOL1;
+    @FXML private TableColumn<stok_nonmodel1,String> stok_nonOKCOL1;
+    @FXML private TableColumn<stok_nonmodel1,String> stok_nonNGCOL1;
+
+    private ObservableList<stok_nonmodel> stok_non = FXCollections.observableArrayList();
+    private ObservableList<stok_nonmodel1> stok_non1 = FXCollections.observableArrayList();
+
+    //Stok SSA(ASSY)
+    @FXML private Label ssa_tgl;
+    @FXML private TextField stok_ssaNP;
+    @FXML private TextField stok_ssaPIP;
+    @FXML private TextField stok_ssaPIW;
+    @FXML private TextField stok_ssaJML;
+    @FXML private TextArea stok_ssaKET;
+    @FXML private TableView<stok_ssamodel>ssa_TV;
+    @FXML private TableColumn<stok_ssamodel,String> ssa_NPCOL;
+    @FXML private TableColumn<stok_ssamodel,String> ssa_PIPCOL;
+    @FXML private TableColumn<stok_ssamodel,String> ssa_PIWCOL;
+    @FXML private TableColumn<stok_ssamodel,String> ssa_JMLCOL;
+    @FXML private TableView<stok_ssamodel1> ssa_TV1;
+    @FXML private TableColumn<stok_ssamodel1,String> ssa_kodeCOL;
+    @FXML private TableColumn<stok_ssamodel1,String> ssa_NPCOL1;
+    @FXML private TableColumn<stok_ssamodel1,String> ssa_jmlCOL1;
+
+    private ObservableList<stok_ssamodel1> ssa_mod1 = FXCollections.observableArrayList();
+    private ObservableList<stok_ssamodel> ssa_mod = FXCollections.observableArrayList();
+
     public void initialize(URL url, ResourceBundle rb){
         setCurrentTime();
         po_tabACT();
         refresh_po();
+
     }
 
     private void po_tabACT(){
@@ -222,6 +263,7 @@ public class managementControl implements Initializable{
                 OKqtypo_materialCOL.setCellValueFactory(cellData->cellData.getValue().qtyProperty());
                 OKhargapo_materialCOL.setCellValueFactory(cellData->cellData.getValue().hargaProperty());
                 OKstatuspo_materialCOL.setCellValueFactory(cellData->cellData.getValue().statusProperty());
+
             }
             ok_po.setItems(getList_ok());
         con.close();
@@ -238,4 +280,7 @@ public class managementControl implements Initializable{
     private ObservableList<list_wait_po> getList_wait(){
         return list_wait;
     }
+
+
+
 }

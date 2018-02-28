@@ -8,12 +8,15 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
@@ -104,25 +107,184 @@
                         </AnchorPane>
                   </content>
                 </Tab>
+                  <Tab text="Stok Produksi Non dan Sub Assy &amp; Laporan Ke FG">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TabPane layoutX="21.0" layoutY="14.0" prefHeight="546.0" prefWidth="1200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <tabs>
+                                    <Tab text="Non Assy">
+                                       <content>
+                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <SplitPane dividerPositions="0.5" layoutX="114.0" layoutY="103.0" orientation="VERTICAL" prefHeight="546.0" prefWidth="1171.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <items>
+                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                         <children>
+                                                            <Label text="NON ASSY -&gt; FG" textFill="RED">
+                                                               <font>
+                                                                  <Font size="39.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <Label layoutX="15.0" layoutY="74.0" text="Kode Part" />
+                                                            <Label layoutX="10.0" layoutY="107.0" text="PIC Produksi" />
+                                                            <Label layoutX="21.0" layoutY="144.0" text="PIC WFG" />
+                                                            <Label fx:id="stok_nontgl" layoutX="1017.0" layoutY="9.0" text="2018/01/22" textFill="#0030ff">
+                                                               <font>
+                                                                  <Font size="27.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <TextField fx:id="stok_nonNP" layoutX="92.0" layoutY="70.0" prefHeight="25.0" prefWidth="222.0" promptText="Kode Part" />
+                                                            <TextField fx:id="stok_nonPICP" layoutX="92.0" layoutY="103.0" prefHeight="25.0" prefWidth="222.0" promptText="PIC Produksi" />
+                                                            <TextField fx:id="stok_nonPICW" layoutX="92.0" layoutY="140.0" prefHeight="25.0" prefWidth="221.0" promptText="PIC WFG" />
+                                                            <Button layoutX="295.0" layoutY="226.0" mnemonicParsing="false" onAction="#stok_nonATL" text="Add To List" />
+                                                            <Label layoutX="24.0" layoutY="179.0" text="Jumlah" />
+                                                            <TextField fx:id="stok_nonJUM" layoutX="92.0" layoutY="175.0" prefHeight="25.0" prefWidth="218.0" promptText="Jumlah Barang" />
+                                                            <TableView fx:id="stok_nonTV1" layoutX="688.0" layoutY="6.0" prefHeight="269.0" prefWidth="250.0">
+                                                               <columns>
+                                                                  <TableColumn fx:id="stok_nonNGCOL1" prefWidth="50.0" text="Kode" />
+                                                                  <TableColumn fx:id="stok_nonNPCOL1" prefWidth="150.0" text="Nama Part" />
+                                                                  <TableColumn fx:id="stok_nonOKCOL1" prefWidth="47.0" text="Jumlah" />
+                                                               </columns>
+                                                            </TableView>
+                                                            <Label layoutX="333.0" layoutY="74.0" text="Keterangan" />
+                                                            <TextArea fx:id="stok_nonKET" layoutX="399.0" layoutY="73.0" prefHeight="138.0" prefWidth="241.0" promptText="Isikan Keterangan Terkait Penyimpanan Barang Ke WFG" />
+                                                            <Separator layoutX="664.0" layoutY="24.0" orientation="VERTICAL" prefHeight="200.0" />
+                                                            <Button layoutX="965.0" layoutY="226.0" mnemonicParsing="false" onAction="#stok_nonrefresh" text="Refresh" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                         <children>
+                                                            <SplitPane dividerPositions="0.31" layoutX="228.0" layoutY="61.0" prefHeight="269.0" prefWidth="1169.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                               <items>
+                                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                                     <children>
+                                                                        <TableView fx:id="stok_nonTV" layoutX="47.0" layoutY="23.0" prefHeight="267.0" prefWidth="345.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                           <columns>
+                                                                              <TableColumn fx:id="stok_nonNPCOL" prefWidth="109.0" text="Nama Part" />
+                                                                              <TableColumn fx:id="stok_nonPICPCOL" prefWidth="82.0" text="PIC Produksi" />
+                                                                              <TableColumn fx:id="stok_nonPICWCOL" prefWidth="95.0" text="PIC WFG" />
+                                                                              <TableColumn fx:id="stok_nonJMLCOL" prefWidth="75.0" text="Jumlah" />
+                                                                           </columns>
+                                                                        </TableView>
+                                                                     </children>
+                                                                  </AnchorPane>
+                                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                                     <children>
+                                                                        <Button layoutX="46.0" layoutY="228.0" mnemonicParsing="false" onAction="#stok_nonEXP" text="Laporkan dan Export" />
+                                                                     </children>
+                                                                  </AnchorPane>
+                                                               </items>
+                                                            </SplitPane>
+                                                         </children>
+                                                      </AnchorPane>
+                                                   </items>
+                                                </SplitPane>
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </Tab>
+                                    <Tab text="Sub Assy">
+                                       <content>
+                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <SplitPane dividerPositions="0.5" layoutX="190.0" layoutY="105.0" orientation="VERTICAL" prefHeight="546.0" prefWidth="1171.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <items>
+                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                         <children>
+                                                            <Label layoutX="14.0" layoutY="14.0" text="Sub Assy -&gt; FG" textFill="RED">
+                                                               <font>
+                                                                  <Font size="39.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <Label layoutX="14.0" layoutY="77.0" text="Kode Part" />
+                                                            <Label layoutX="14.0" layoutY="105.0" text="PIC Produksi" />
+                                                            <Label layoutX="14.0" layoutY="135.0" text="PIC WFG" />
+                                                            <Label fx:id="ssa_tgl" layoutX="976.0" layoutY="17.0" text="2018/12/11" textFill="#2234ba">
+                                                               <font>
+                                                                  <Font size="35.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <Label layoutX="14.0" layoutY="170.0" text="Jumlah" />
+                                                            <TextField fx:id="stok_ssaNP" layoutX="110.0" layoutY="73.0" prefHeight="25.0" prefWidth="211.0" promptText="Kode Part" />
+                                                            <TextField fx:id="stok_ssaPIP" layoutX="110.0" layoutY="101.0" prefHeight="25.0" prefWidth="209.0" promptText="PIC Produksi" />
+                                                            <TextField fx:id="stok_ssaPIW" layoutX="110.0" layoutY="131.0" prefHeight="25.0" prefWidth="210.0" promptText="PIC WFG" />
+                                                            <TextField fx:id="stok_ssaJML" layoutX="110.0" layoutY="166.0" prefHeight="25.0" prefWidth="207.0" promptText="Jumlah" />
+                                                            <Label layoutX="340.0" layoutY="69.0" text="Keterangan" />
+                                                            <TextArea fx:id="stok_ssaKET" layoutX="408.0" layoutY="71.0" prefHeight="145.0" prefWidth="231.0" promptText="Isikan Keterangan Terkait Penyimpanan Barang Ke WFG" />
+                                                            <Separator layoutX="650.0" layoutY="35.0" orientation="VERTICAL" prefHeight="200.0" />
+                                                            <TableView fx:id="ssa_TV1" layoutX="662.0" layoutY="31.0" prefHeight="221.0" prefWidth="234.0">
+                                                               <columns>
+                                                                  <TableColumn fx:id="ssa_kodeCOL" prefWidth="43.0" text="Kode" />
+                                                                  <TableColumn fx:id="ssa_NPCOL1" prefWidth="127.0" text="Nama Part" />
+                                                                  <TableColumn fx:id="ssa_jmlCOL1" prefWidth="63.0" text="Jumlah" />
+                                                               </columns>
+                                                            </TableView>
+                                                            <Button layoutX="314.0" layoutY="223.0" mnemonicParsing="false" onAction="#ssa_ATL" text="Add To List" />
+                                                            <Button layoutX="924.0" layoutY="223.0" mnemonicParsing="false" onAction="#stok_ssarefresh" text="Refresh" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                         <children>
+                                                            <SplitPane dividerPositions="0.31" layoutX="113.0" layoutY="37.0" prefHeight="269.0" prefWidth="1169.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                               <items>
+                                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                                     <children>
+                                                                        <TableView fx:id="ssa_TV" layoutX="38.0" layoutY="34.0" prefHeight="267.0" prefWidth="345.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                           <columns>
+                                                                              <TableColumn fx:id="ssa_NPCOL" prefWidth="116.0" text="Nama Part" />
+                                                                              <TableColumn fx:id="ssa_PIPCOL" prefWidth="83.0" text="PIC Produksi" />
+                                                                              <TableColumn fx:id="ssa_PIWCOL" prefWidth="81.0" text="PIC WFG" />
+                                                                              <TableColumn fx:id="ssa_JMLCOL" prefWidth="72.0" text="Jumlah" />
+                                                                           </columns>
+                                                                        </TableView>
+                                                                     </children>
+                                                                  </AnchorPane>
+                                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                                     <children>
+                                                                        <Button layoutX="14.0" layoutY="228.0" mnemonicParsing="false" onAction="#ssa_EXP" text="Laporkan &amp; Export" />
+                                                                     </children>
+                                                                  </AnchorPane>
+                                                               </items>
+                                                            </SplitPane>
+                                                         </children>
+                                                      </AnchorPane>
+                                                   </items>
+                                                </SplitPane>
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </Tab>
+                                 </tabs>
+                              </TabPane>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
                   <Tab text="Stok FG">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <SplitPane dividerPositions="0.2" layoutX="105.0" layoutY="70.0" orientation="VERTICAL" prefHeight="539.0" prefWidth="846.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <SplitPane dividerPositions="0.4" layoutX="105.0" layoutY="70.0" orientation="VERTICAL" prefHeight="539.0" prefWidth="846.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <items>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                        <children>
-                                          <Label fx:id="t2_label_date" layoutX="14.0" layoutY="31.0" text="2018/07/11" textFill="RED">
+                                          <Label fx:id="t2_label_date" layoutX="14.0" layoutY="14.0" text="2018/07/11" textFill="RED">
                                              <font>
                                                 <Font size="29.0" />
                                              </font>
                                           </Label>
-                                          <Button layoutX="451.0" layoutY="62.0" mnemonicParsing="false" onAction="#t2_refresh" text="Refresh" />
+                                          <Button layoutX="331.0" layoutY="94.0" mnemonicParsing="false" onAction="#t2_refresh" text="Refresh" />
+                                          <RadioButton fx:id="stok_fg_all" layoutX="303.0" layoutY="57.0" mnemonicParsing="false" text="All" />
+                                          <RadioButton fx:id="stok_fg_assy" layoutX="382.0" layoutY="57.0" mnemonicParsing="false" text="Assy" />
+                                          <RadioButton fx:id="stok_fg_non" layoutX="453.0" layoutY="57.0" mnemonicParsing="false" text="Non Assy" />
+                                          <Button layoutX="429.0" layoutY="94.0" mnemonicParsing="false" text="Export" />
+                                          <Label layoutX="303.0" layoutY="175.0" text="*NOTE : Export hanya untuk saat stock taking" textFill="RED" />
                                        </children>
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                        <children>
-                                          <TableView fx:id="t2_tv" layoutX="109.0" layoutY="114.0" prefHeight="427.0" prefWidth="844.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <TableView fx:id="t2_tv" layoutX="109.0" layoutY="56.0" prefHeight="371.0" prefWidth="844.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <columns>
                                               <TableColumn fx:id="t2_npCOL" prefWidth="158.0" text="Nama Part" />
                                               <TableColumn fx:id="t2_jumCOL" prefWidth="106.0" text="Jumlah" />

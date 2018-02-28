@@ -175,6 +175,30 @@ public class alert {
         alert.setTitle("Warning");
         alert.setHeaderText("Tidak Dapat Melanjutkan Proses");
         alert.setContentText("Pastikan data sudah terinput");
+        alert.showAndWait();
+    }
+
+    public void warn_wipassy(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning");
+        alert.setHeaderText("Tidak Dapat Melanjutkan Proses");
+        alert.setContentText("Kode yang anda masukkan merupakan kode part yang bukan termasuk part yang di perlukan Assy.");
+
+        alert.showAndWait();
+    }
+    public void warn_datanotfoundCPROD(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Not Found");
+        alert.setHeaderText("Tidak Dapat Melist");
+        alert.setContentText("Pastikan anda sudah melaporkan produksi,dan cek kembali!");
+
+        alert.showAndWait();
+    }
+    public void warn_dataisondatabase(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Data sudah ada");
+        alert.setHeaderText("Tidak Dapat Upload");
+        alert.setContentText("Pastikan anda memilih FG dan WIP dengan benar!");
 
         alert.showAndWait();
     }
