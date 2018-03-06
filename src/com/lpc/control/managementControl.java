@@ -1,10 +1,15 @@
 package com.lpc.control;
 
 import com.lpc.driver.connector;
+import com.lpc.model.stok_prod_model;
+import com.lpc.model.stok_wip_model;
+import com.lpc.model.stok_assy_model;
 import com.lpc.ui.alert;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,6 +33,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class managementControl implements Initializable{
@@ -95,11 +101,78 @@ public class managementControl implements Initializable{
     private ObservableList<stok_ssamodel1> ssa_mod1 = FXCollections.observableArrayList();
     private ObservableList<stok_ssamodel> ssa_mod = FXCollections.observableArrayList();
 
+    //Stok Produksi
+    @FXML private RadioButton stok_prod_all;
+    @FXML private RadioButton stok_prod_fg;
+    @FXML private RadioButton stok_prod_wip;
+    @FXML private TableView<stok_prod_model> stok_prod_tv;
+    @FXML private TableColumn<stok_prod_model,String> stok_prod_namapart;
+    @FXML private TableColumn<stok_prod_model,String> stok_prod_stok;
+    @FXML private TableColumn<stok_prod_model,String> stok_prod_ng;
+    @FXML private TableColumn<stok_prod_model,String> stok_prod_runner;
+    @FXML private TableColumn<stok_prod_model,String> stok_prod_bonggol;
+    @FXML private TableColumn<stok_prod_model,String> stok_prod_wip1;
+    @FXML private TableColumn<stok_prod_model,String> stok_prod_status;
+    @FXML private TableColumn<stok_prod_model,String> stok_prod_total;
+    private ObservableList<stok_prod_model> stok_prod_models = FXCollections.observableArrayList();
+    final ToggleGroup stok_prod_group = new ToggleGroup();
+
+    //Stok WIP
+    @FXML private TableView<stok_wip_model> stok_wip_tv;
+    @FXML private TableColumn<stok_wip_model,String> stok_wip_namapart;
+    @FXML private TableColumn<stok_wip_model,String> stok_wip_permintaanassy;
+    @FXML private TableColumn<stok_wip_model,String> stok_wip_sisa;
+    private ObservableList<stok_wip_model> stok_wip_models = FXCollections.observableArrayList();
+
+    //Stok Assy
+    @FXML private TableView<stok_assy_model> stok_assy_tv;
+    @FXML private TableColumn<stok_assy_model,String> stok_assy_namapart;
+    @FXML private TableColumn<stok_assy_model,String> stok_assy_ng;
+    @FXML private TableColumn<stok_assy_model,String> stok_assy_jumlah;
+    @FXML private TableColumn<stok_assy_model,String> stok_assy_total;
+    private ObservableList<stok_assy_model> stok_assy_models = FXCollections.observableArrayList();
+
+
     public void initialize(URL url, ResourceBundle rb){
         setCurrentTime();
         po_tabACT();
         refresh_po();
+        radiobutton_stok_fg();
+        stok_wip_refresh();
+        stok_assy_refresh();
+        stok_prod_refresh(1);
 
+    }
+
+    @SuppressWarnings("all")
+    private void radiobutton_stok_fg(){
+        stok_prod_all.setToggleGroup(stok_prod_group);
+        stok_prod_fg.setToggleGroup(stok_prod_group);
+        stok_prod_wip.setToggleGroup(stok_prod_group);
+        stok_prod_all.setSelected(true);
+        stok_prod_group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            public void changed(ObservableValue<? extends Toggle> ov,
+                                Toggle old_toggle, Toggle new_toggle) {
+                if (stok_prod_group.getSelectedToggle() != null) {
+                    //System.out.println(group.getSelectedToggle().getUserData().toString());
+                    RadioButton button = (RadioButton)stok_prod_group.getSelectedToggle();
+                    String a =button.getId();
+
+                    if(Objects.equals(a, "stok_prod_all")){
+                        stok_prod_refresh(1);
+
+                    }else if(Objects.equals(a, "stok_prod_wip")){
+                        stok_prod_refresh(3);
+
+                    }
+                    else if(Objects.equals(a, "stok_prod_fg")){
+                        stok_prod_refresh(2);
+
+                    }
+                    System.out.println(a);
+                }
+            }
+        });
     }
 
     private void po_tabACT(){
@@ -280,7 +353,160 @@ public class managementControl implements Initializable{
     private ObservableList<list_wait_po> getList_wait(){
         return list_wait;
     }
+    @SuppressWarnings("all")
+    @FXML private void stok_prod_refresh1(){
+        RadioButton button = (RadioButton)stok_prod_group.getSelectedToggle();
+        String a =button.getId();
+        if(Objects.equals(a, "stok_prod_all")){
+            stok_prod_refresh(1);
 
+        }else if(Objects.equals(a, "stok_prod_wip")){
+            stok_prod_refresh(3);
 
+        }
+        else if(Objects.equals(a, "stok_prod_fg")){
+            stok_prod_refresh(2);
 
+        }
+    }
+    @SuppressWarnings("all")
+    private void stok_prod_refresh(int i){
+        try {
+            stok_prod_tv.getItems().clear();
+            stok_prod_models.clear();
+            Connection con = null;
+            ResultSet rs = null;
+            Statement stmt = null;
+            con = connector.setConnection();
+            stmt = con.createStatement();
+            int ok=0;int ng = 0;int wip=0;int total=0;
+            float runner =0;float bonggol=0;
+            if(i==1){
+                rs = stmt.executeQuery("SELECT nama_part,ok,ng,runner,bonggol,wip,stat FROM stok_barang_fresh ORDER BY nama_part ASC,stat ASC;");
+                while (rs.next()){
+                    ok = rs.getInt(2);
+                    ng = rs.getInt(3);
+                    wip = rs.getInt(6);
+                    total = ok+ng+wip;
+                    stok_prod_models.addAll(new stok_prod_model(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),String.valueOf(total)));
+                    stok_prod_namapart.setCellValueFactory(cellData->cellData.getValue().namapartProperty());
+                    stok_prod_stok.setCellValueFactory(cellData -> cellData.getValue().stokProperty());
+                    stok_prod_ng.setCellValueFactory(cellData -> cellData.getValue().ngProperty());
+                    stok_prod_runner.setCellValueFactory(cellData -> cellData.getValue().runnerProperty());
+                    stok_prod_bonggol.setCellValueFactory(cellData-> cellData.getValue().bonggolProperty());
+                    stok_prod_wip1.setCellValueFactory(cellData->cellData.getValue().wipProperty());
+                    stok_prod_total.setCellValueFactory(cellData->cellData.getValue().totalProperty());
+                    stok_prod_status.setCellValueFactory(cellData->cellData.getValue().statusProperty());
+
+                }
+                stok_prod_tv.setItems(getStok_prod_models());
+                con.close();
+            }else if(i==2){
+                rs = stmt.executeQuery("SELECT nama_part,ok,ng,runner,bonggol,wip,stat FROM stok_barang_fresh WHERE stat='FG' ORDER BY nama_part ASC;");
+                while (rs.next()){
+                    ok = rs.getInt(2);
+                    ng = rs.getInt(3);
+                    wip = rs.getInt(6);
+                    total = ok+ng+wip;
+                    stok_prod_models.addAll(new stok_prod_model(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),String.valueOf(total)));
+                    stok_prod_namapart.setCellValueFactory(cellData->cellData.getValue().namapartProperty());
+                    stok_prod_stok.setCellValueFactory(cellData -> cellData.getValue().stokProperty());
+                    stok_prod_ng.setCellValueFactory(cellData -> cellData.getValue().ngProperty());
+                    stok_prod_runner.setCellValueFactory(cellData -> cellData.getValue().runnerProperty());
+                    stok_prod_bonggol.setCellValueFactory(cellData-> cellData.getValue().bonggolProperty());
+                    stok_prod_wip1.setCellValueFactory(cellData->cellData.getValue().wipProperty());
+                    stok_prod_total.setCellValueFactory(cellData->cellData.getValue().totalProperty());
+                    stok_prod_status.setCellValueFactory(cellData->cellData.getValue().statusProperty());
+
+                }
+                stok_prod_tv.setItems(getStok_prod_models());
+                con.close();
+            }else if(i == 3){
+                rs = stmt.executeQuery("SELECT nama_part,ok,ng,runner,bonggol,wip,stat FROM stok_barang_fresh WHERE stat='WIP' ORDER BY nama_part ASC;");
+                while (rs.next()){
+                    ok = rs.getInt(2);
+                    ng = rs.getInt(3);
+                    wip = rs.getInt(6);
+                    total = ok+ng+wip;
+                    stok_prod_models.addAll(new stok_prod_model(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),String.valueOf(total)));
+                    stok_prod_namapart.setCellValueFactory(cellData->cellData.getValue().namapartProperty());
+                    stok_prod_stok.setCellValueFactory(cellData -> cellData.getValue().stokProperty());
+                    stok_prod_ng.setCellValueFactory(cellData -> cellData.getValue().ngProperty());
+                    stok_prod_runner.setCellValueFactory(cellData -> cellData.getValue().runnerProperty());
+                    stok_prod_bonggol.setCellValueFactory(cellData-> cellData.getValue().bonggolProperty());
+                    stok_prod_wip1.setCellValueFactory(cellData->cellData.getValue().wipProperty());
+                    stok_prod_total.setCellValueFactory(cellData->cellData.getValue().totalProperty());
+                    stok_prod_status.setCellValueFactory(cellData->cellData.getValue().statusProperty());
+
+                }
+                stok_prod_tv.setItems(getStok_prod_models());
+                con.close();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    private ObservableList<stok_prod_model> getStok_prod_models(){
+        return stok_prod_models;
+    }
+
+    //Stok WIP
+    private ObservableList<stok_wip_model> getStok_wip_models(){
+        return stok_wip_models;
+    }
+    @FXML private void stok_wip_refresh(){
+        try {
+            stok_wip_models.clear();
+            stok_wip_tv.getItems().clear();
+            Connection con = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            con = connector.setConnection();
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT a.nama_part,a.wip,b.wip FROM stok_barang_wip a,stok_barang_fresh b WHERE a.nama_part = b.nama_part && stat='WIP' ORDER BY a.nama_part ASC;");
+            while (rs.next()){
+                stok_wip_models.addAll(new stok_wip_model(rs.getString(1),rs.getString(2),rs.getString(3)));
+                stok_wip_namapart.setCellValueFactory(cellData -> cellData.getValue().namapartProperty());
+                stok_wip_permintaanassy.setCellValueFactory(cellData -> cellData.getValue().wipProperty());
+                stok_wip_sisa.setCellValueFactory(cellData -> cellData.getValue().sisaProperty());
+            }
+            stok_wip_tv.setItems(getStok_wip_models());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    //Stok Assy
+    private ObservableList<stok_assy_model> getStok_assy_models(){
+        return stok_assy_models;
+    }
+    @FXML private void stok_assy_refresh(){
+        try {
+            stok_assy_tv.getItems().clear();
+            stok_assy_models.clear();
+            Connection con = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            con = connector.setConnection();
+            stmt = con.createStatement();
+            int ok = 0;
+            int ng = 0;
+            int tot = 0;
+            rs = stmt.executeQuery("SELECT nama_part,stok,ng FROM stok_barang_subassy ORDER BY nama_part ASC");
+            while (rs.next()){
+                ok = rs.getInt(2);
+                ng = rs.getInt(3);
+                tot = ok+ng;
+                stok_assy_models.addAll(new stok_assy_model(rs.getString(1),rs.getString(2),rs.getString(3),String.valueOf(tot)));
+                stok_assy_namapart.setCellValueFactory(cellData -> cellData.getValue().namapartProperty());
+                stok_assy_jumlah.setCellValueFactory(cellData -> cellData.getValue().jumlahProperty());
+                stok_assy_ng.setCellValueFactory(cellData -> cellData.getValue().ngProperty());
+                stok_assy_total.setCellValueFactory(cellData -> cellData.getValue().totalProperty());
+            }
+            stok_assy_tv.setItems(getStok_assy_models());
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.lpc.control;
 
 import com.lpc.driver.connector;
+import com.lpc.model.delivery_model;
 import com.lpc.ui.alert;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -15,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.util.Duration;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.annotation.Resource;
 import java.net.URL;
@@ -22,9 +24,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class finishgoodControl implements Initializable {
     @FXML
@@ -118,6 +119,25 @@ public class finishgoodControl implements Initializable {
     @FXML private RadioButton stok_fg_non;
     final ToggleGroup stok_fg_group = new ToggleGroup();
 
+    //Delivery
+    @FXML private TextField delivery_kodepart;
+    @FXML private TextField delivery_order;
+    @FXML private TextField delivery_jumlah;
+    @FXML private TextField delivery_suratjalan;
+    @FXML private TextField delivery_po;
+    @FXML private ComboBox<String> delivery_cust;
+    @FXML private CheckBox delivery_terimasebagian;
+    @FXML private Label deliveryTIME;
+    @FXML private TextField delivery_actual;
+
+    @FXML private TableView<delivery_model> delivery_tv_list;
+    @FXML private TableColumn<delivery_model,String> delivery_listNAMA;
+    @FXML private TableColumn<delivery_model,String> delivery_listDO;
+    @FXML private TableColumn<delivery_model,String> delivery_listCUST;
+    @FXML private TableColumn<delivery_model,String> delivery_listJUMLAH;
+
+
+    private ObservableList<delivery_model> deliveMOD = FXCollections.observableArrayList();
 
     public void initialize(URL url, ResourceBundle rb) {
         setCurrentTime();
@@ -126,6 +146,61 @@ public class finishgoodControl implements Initializable {
         stok_nonrefresh();
         stok_ssarefresh();
         radiobutton_stok_fg();
+        listingCB_customer();
+        delive_ts();
+        delivery_actual.setDisable(true);
+    }
+
+    @SuppressWarnings("all")
+    private void delive_ts(){
+        EventHandler eh = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (event.getSource() instanceof CheckBox) {
+                    CheckBox chk = (CheckBox) event.getSource();
+                    if (delivery_terimasebagian.isSelected()) {
+                        delivery_actual.setDisable(false);
+                        //System.out.println("A");
+
+                    }
+                    else if (!delivery_terimasebagian.isSelected()){
+                        //list_cb();
+                        delivery_actual.setDisable(true);
+                    }
+                }
+            }
+        };
+        delivery_terimasebagian.setOnAction(eh);
+    }
+    private void listingCB_customer(){
+        try{
+            List<String> listcust = new ArrayList<String>();
+            listcust.clear();
+            delivery_cust.getItems().clear();
+            Connection con = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            con = connector.setConnection();
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT name_customer FROM list_customer;");
+            while(rs.next()){
+                //List<String> listPart = new ArrayList<String>();
+                listcust.add(rs.getString(1));
+
+                //options.add(listPart);
+
+            }
+            delivery_cust.getItems().addAll(FXCollections.observableArrayList(listcust));
+            System.out.println(listcust);
+            con.close();
+            setCurrentTime();
+            //String dateProduksi = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+            //System.out.println(dateProduksi);
+
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     private void setCurrentTime() {
@@ -157,6 +232,7 @@ public class finishgoodControl implements Initializable {
                                 //t2_label_date.setText(simpleDateFormat.format(time.getTime()));
                                 stok_nontgl.setText(simpleDateFormat.format(time.getTime()));
                                 ssa_tgl.setText(simpleDateFormat.format(time.getTime()));
+                                deliveryTIME.setText(simpleDateFormat.format(time.getTime()));
                             }
                         }
                 ),
@@ -166,8 +242,8 @@ public class finishgoodControl implements Initializable {
         timeline.play();
     }
 
-    @FXML
-    private void t2_refresh() {
+    @SuppressWarnings("all")
+    @FXML private void t2_refresh() {
         try {
             t2_tv.getItems().clear();
             getT2_models().clear();
@@ -560,4 +636,182 @@ public class finishgoodControl implements Initializable {
         }
 
     }
+    //Delivery Region
+    @SuppressWarnings("all")
+    @FXML private void delivery_ATL(){
+        try {
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            String kode_part = delivery_kodepart.getText();
+            String nama_part = null;
+            String tanggal = format.format(cal.getTime());
+            String deliveorder = delivery_order.getText();
+            String customer = delivery_cust.getValue();
+            String jumlah = delivery_jumlah.getText();
+            String surat_jalan = delivery_suratjalan.getText();
+            String purchase_order = delivery_po.getText();
+
+            Connection con = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            con = connector.setConnection();
+            stmt = con.createStatement();
+
+                System.out.println("OK");
+                rs = stmt.executeQuery("SELECT a.nama_part FROM list_part a,stok_wfg_total b WHERE a.code_part='" + kode_part + "' && a.nama_part=b.nama_part;");
+                if (rs.next()) {
+                    do {
+                        nama_part = rs.getString(1);
+                    }
+                    while (rs.next());
+                    if (delivery_terimasebagian.isSelected()) {
+                        if (deliveorder.isEmpty() && customer.isEmpty() && jumlah.isEmpty() && surat_jalan.isEmpty() && purchase_order.isEmpty() && deliveorder.isEmpty()){
+                            alert al = new alert();
+                            al.err_requirednotfound();
+                            System.out.println("Error");
+                        }
+                        else {
+                            String actual = delivery_actual.getText();
+                            String ts = "Partial";
+                            if (delivery_tv_list.getItems().size() < 15) {
+                                deliveMOD.addAll(new delivery_model(nama_part, deliveorder, customer, jumlah, surat_jalan, purchase_order, tanggal, ts,actual));
+                                delivery_listNAMA.setCellValueFactory(cellData -> cellData.getValue().nama_partProperty());
+                                delivery_listCUST.setCellValueFactory(cellData -> cellData.getValue().delivery_custProperty());
+                                delivery_listDO.setCellValueFactory(cellData -> cellData.getValue().delivery_orderProperty());
+                                delivery_listJUMLAH.setCellValueFactory(cellData -> cellData.getValue().deliveryJumlahProperty());
+                                delivery_tv_list.setItems(getDeliveMOD());
+                            } else {
+                                alert al = new alert();
+                                al.max15();
+                            }
+                        }
+
+                    } else if (!delivery_terimasebagian.isSelected()) {
+                        if (deliveorder.isEmpty() && customer.isEmpty() && jumlah.isEmpty() && surat_jalan.isEmpty() && purchase_order.isEmpty() && deliveorder.isEmpty()){
+                            alert al = new alert();
+                            al.err_requirednotfound();
+                            System.out.println("Error");
+                        }
+                        else{
+                            String ts = "Full";
+                            if (delivery_tv_list.getItems().size() < 15) {
+                                deliveMOD.addAll(new delivery_model(nama_part, deliveorder, customer, jumlah, surat_jalan, purchase_order, tanggal, ts,jumlah));
+                                delivery_listNAMA.setCellValueFactory(cellData -> cellData.getValue().nama_partProperty());
+                                delivery_listCUST.setCellValueFactory(cellData -> cellData.getValue().delivery_custProperty());
+                                delivery_listDO.setCellValueFactory(cellData -> cellData.getValue().delivery_orderProperty());
+                                delivery_listJUMLAH.setCellValueFactory(cellData -> cellData.getValue().deliveryJumlahProperty());
+                                delivery_tv_list.setItems(getDeliveMOD());
+                            } else {
+                                alert al = new alert();
+                                al.max15();
+                            }
+                        }
+                    }
+
+
+                } else if (!rs.next()) {
+                    alert al = new alert();
+                    al.warn_datanotfound();
+                }
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+    }
+    public ObservableList<delivery_model> getDeliveMOD(){
+        return deliveMOD;
+    }
+    //NOT REVIEWED
+    @SuppressWarnings("all")
+    @FXML private void delivery_upload(){
+        try {
+            Connection con = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            ResultSet rs1 = null;
+            con = connector.setConnection();
+            stmt = con.createStatement();
+
+            for(int i = 0; i<delivery_tv_list.getItems().size();i++){
+                String nama_part = delivery_tv_list.getItems().get(i).getNama_part();
+                String tanggal = delivery_tv_list.getItems().get(i).getDelivery_tanggal();
+                String customer = delivery_tv_list.getItems().get(i).getDelivery_cust();
+                String surat_jalan = delivery_tv_list.getItems().get(i).getDelivery_suratjalan();
+                String delivery_order = delivery_tv_list.getItems().get(i).getDelivery_order();
+                String status = delivery_tv_list.getItems().get(i).getDelivery_terimasebagian();
+                String purchase_order = delivery_tv_list.getItems().get(i).getDelivery_po();
+                String jumlah = delivery_tv_list.getItems().get(i).getDeliveryJumlah();
+                String actual = delivery_tv_list.getItems().get(i).getDelivery_actual();
+                int deliveryUSER = Integer.parseInt(jumlah);
+                int deliveryDB = 0;
+                int deliveryLast = 0;
+                int stokUser = deliveryUSER;
+                int stokDB = 0;
+                int stokLast = 0;
+                int decDB = 0;
+                int decUSER = Integer.parseInt(actual);
+                int decLast = 0;
+                rs = stmt.executeQuery("SELECT delivered,jumlah FROM stok_wfg_delivery WHERE nama_part='"+nama_part+"' && stat='Partial';");
+                if(rs.next()){
+                    do {
+                        deliveryDB = rs.getInt(1);
+                        decDB = rs.getInt(2);
+                    } while (rs.next());
+                    stmt.executeUpdate("INSERT INTO laporan_delivery(nama_part, tanggal, cust, purchase_order, delivery_order, jumlah, stat, surat_jalan)" +
+                            "VALUES ('"+nama_part+"','"+tanggal+"','"+customer+"','"+purchase_order+"','"+delivery_order+"','"+deliveryUSER+"','"+status+"','"+surat_jalan+"')");
+                    rs1 = stmt.executeQuery("SELECT jumlah FROM stok_wfg_total WHERE nama_part='"+nama_part+"';");
+                    while(rs1.next()){
+                        stokDB = rs1.getInt(1);
+                    }
+                    stokLast = stokDB - stokUser;
+                    deliveryLast = deliveryDB + deliveryUSER;
+                    if(decDB == deliveryLast){
+                        stmt.executeUpdate("UPDATE stok_wfg_delivery SET delivered='"+deliveryLast+"',stat='Full' WHERE nama_part='"+nama_part+"' && stat='Partial' && no_po='"+purchase_order+"' && no_do='"+delivery_order+"';");
+                        stmt.executeUpdate("UPDATE stok_wfg_total SET jumlah='"+stokLast+"' WHERE nama_part='"+nama_part+"';");
+                    }else if(decDB> deliveryLast){
+                        stmt.executeUpdate("UPDATE stok_wfg_delivery SET delivered='"+deliveryLast+"' WHERE nama_part='"+nama_part+"' && stat='Partial' && no_po='"+purchase_order+"' && no_do='"+delivery_order+"';");
+                        stmt.executeUpdate("UPDATE stok_wfg_total SET jumlah='"+stokLast+"' WHERE nama_part='"+nama_part+"';");
+                    }
+
+                }
+                else if(!rs.next()){
+                    if(status.equals("Partial")){
+                        rs1 = stmt.executeQuery("SELECT jumlah FROM stok_wfg_total WHERE nama_part='"+nama_part+"';");
+                        while(rs1.next()){
+                            stokDB = rs1.getInt(1);
+                        }
+                        stokLast = stokDB - stokUser;
+                        stmt.executeUpdate("UPDATE stok_wfg_total SET jumlah='"+stokLast+"' WHERE nama_part='"+nama_part+"';");
+
+                        stmt.executeUpdate("INSERT INTO laporan_delivery(nama_part, tanggal, cust, purchase_order, delivery_order, jumlah, stat, surat_jalan)" +
+                                "VALUES ('"+nama_part+"','"+tanggal+"','"+customer+"','"+purchase_order+"','"+delivery_order+"','"+deliveryUSER+"','"+status+"','"+surat_jalan+"');");
+                        stmt.executeUpdate("INSERT INTO stok_wfg_delivery(nama_part, tanggal, no_do, no_po, cust, surat_jalan, jumlah, delivered, stat)" +
+                                "VALUES ('"+nama_part+"','"+tanggal+"','"+delivery_order+"','"+purchase_order+"','"+customer+"','"+surat_jalan+"','"+deliveryUSER+"','"+decUSER+"','"+status+"');");
+
+                    }else if(status.equals("Full")){
+                        rs1 = stmt.executeQuery("SELECT jumlah FROM stok_wfg_total WHERE nama_part='"+nama_part+"';");
+                        while(rs1.next()){
+                            stokDB = rs1.getInt(1);
+                        }
+                        stokLast = stokDB - stokUser;
+                        stmt.executeUpdate("UPDATE stok_wfg_total SET jumlah='"+stokLast+"' WHERE nama_part='"+nama_part+"';");
+
+                        stmt.executeUpdate("INSERT INTO laporan_delivery(nama_part, tanggal, cust, purchase_order, delivery_order, jumlah, stat, surat_jalan)" +
+                                "VALUES ('"+nama_part+"','"+tanggal+"','"+customer+"','"+purchase_order+"','"+delivery_order+"','"+deliveryUSER+"','"+status+"','"+surat_jalan+"');");
+                        stmt.executeUpdate("INSERT INTO stok_wfg_delivery(nama_part, tanggal, no_do, no_po, cust, surat_jalan, jumlah, delivered, stat)" +
+                                "VALUES ('"+nama_part+"','"+tanggal+"','"+delivery_order+"','"+purchase_order+"','"+customer+"','"+surat_jalan+"','"+deliveryUSER+"','"+deliveryUSER+"','"+status+"');");
+                    }
+
+                }
+            }
+            con.close();
+            alert al = new alert();
+            al.info_upload();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        String a = delivery_tv_list.getItems().get(0).getDelivery_terimasebagian();
+        System.out.println(a);
+    }
+
 }

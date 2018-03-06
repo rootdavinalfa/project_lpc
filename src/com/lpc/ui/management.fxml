@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lpc.control.managementControl">
+   <children>
+      <TabPane layoutX="70.0" layoutY="68.0" prefHeight="565.0" prefWidth="751.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab text="Overview">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <GridPane layoutX="335.0" layoutY="286.0" prefHeight="571.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="PO Material">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TabPane layoutX="110.0" layoutY="112.0" prefHeight="536.0" prefWidth="751.0" side="BOTTOM" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <tabs>
+                            <Tab text="Buat &amp; Cek Status PO">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.5" layoutX="174.0" layoutY="154.0" orientation="VERTICAL" prefHeight="507.0" prefWidth="751.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <SplitPane dividerPositions="0.5635876840696118" layoutX="88.0" layoutY="45.0" prefHeight="250.0" prefWidth="749.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <items>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                               <children>
+                                                                  <TableView fx:id="wait_po" layoutX="28.0" layoutY="24.0" prefHeight="248.0" prefWidth="418.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                    <columns>
+                                                                      <TableColumn fx:id="Waitnama_materialCOL" prefWidth="208.0" text="Nama Material" />
+                                                                      <TableColumn fx:id="Waitnopo_materialCOL" prefWidth="68.0" text="NO PO" />
+                                                                        <TableColumn fx:id="Waitqtypo_materialCOL" text="QTY PO" />
+                                                                        <TableColumn fx:id="Waittanggalpo_materialCOL" prefWidth="115.0" text="Tanggal PO" />
+                                                                        <TableColumn fx:id="Waithargapo_materialCOL" prefWidth="100.0" text="Harga" />
+                                                                    </columns>
+                                                                  </TableView>
+                                                               </children>
+                                                            </AnchorPane>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                               <children>
+                                                                  <Label layoutX="8.0" layoutY="14.0" text="Nama Material" />
+                                                                  <Label layoutX="8.0" layoutY="42.0" text="No PO" />
+                                                                  <Label layoutX="14.0" layoutY="75.0" text="QTY PO" />
+                                                                  <Label layoutX="10.0" layoutY="103.0" text="Harga" />
+                                                                  <TextField fx:id="txt_nama_po" layoutX="106.0" layoutY="10.0" prefHeight="25.0" prefWidth="210.0" />
+                                                                  <TextField fx:id="txt_no_po" layoutX="106.0" layoutY="38.0" prefHeight="25.0" prefWidth="210.0" />
+                                                                  <TextField fx:id="txt_qty_po" layoutX="106.0" layoutY="71.0" prefHeight="25.0" prefWidth="209.0" />
+                                                                  <TextField fx:id="txt_harga_po" layoutX="106.0" layoutY="99.0" prefHeight="25.0" prefWidth="208.0" />
+                                                                  <Button layoutX="183.0" layoutY="148.0" mnemonicParsing="false" onAction="#add_wait_po" text="Add To List" />
+                                                                  <Label fx:id="po_tanggal" layoutX="12.0" layoutY="180.0" text="2018/02/01" textFill="RED">
+                                                                     <font>
+                                                                        <Font size="30.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                                  <Button layoutX="195.0" layoutY="225.0" mnemonicParsing="false" onAction="#upload_po" text="Upload" />
+                                                                  <Separator layoutX="327.0" layoutY="24.0" orientation="VERTICAL" prefHeight="200.0" />
+                                                                  <Button layoutX="334.0" layoutY="27.0" mnemonicParsing="false" onAction="#refresh_po" prefHeight="186.0" prefWidth="100.0" text="Refresh" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                        </items>
+                                                      </SplitPane>
+                                                   </children>
+                                                </AnchorPane>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <TableView fx:id="ok_po" layoutX="14.0" layoutY="23.0" prefHeight="267.0" prefWidth="1022.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <columns>
+                                                          <TableColumn fx:id="OKnama_materialCOL" prefWidth="180.0" text="Nama Material" />
+                                                          <TableColumn fx:id="OKnopo_materialCOL" prefWidth="157.0" text="NO PO" />
+                                                            <TableColumn fx:id="OKqtypo_materialCOL" prefWidth="75.0" text="QTY PO" />
+                                                            <TableColumn fx:id="OKtanggalpo_materialCOL" prefWidth="115.0" text="Tanggal PO" />
+                                                            <TableColumn fx:id="OKhargapo_materialCOL" prefWidth="113.0" text="Harga" />
+                                                            <TableColumn fx:id="OKstatuspo_materialCOL" prefWidth="122.0" text="Status" />
+                                                        </columns>
+                                                      </TableView>
+                                                   </children>
+                                                </AnchorPane>
+                                            </items>
+                                          </SplitPane>
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                              <Tab text="Cek Stok Material">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                </content>
+                              </Tab>
+                          </tabs>
+                        </TabPane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Stok Barang (Produk)">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TabPane layoutX="65.0" layoutY="100.0" prefHeight="571.0" prefWidth="1024.0" side="BOTTOM" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <tabs>
+                            <Tab text="Cek Produksi">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.5537037037037037" layoutX="137.0" layoutY="85.0" orientation="VERTICAL" prefHeight="542.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <GridPane layoutX="221.0" layoutY="97.0" prefHeight="296.0" prefWidth="1022.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints maxHeight="242.0" minHeight="10.0" prefHeight="231.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints maxHeight="143.0" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <PieChart prefHeight="175.0" prefWidth="522.0" />
+                                                            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                                               <children>
+                                                                  <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#stok_prod_refresh1" text="Refresh" />
+                                                                  <RadioButton fx:id="stok_prod_all" layoutX="135.0" layoutY="24.0" mnemonicParsing="false" text="All" />
+                                                                  <RadioButton fx:id="stok_prod_fg" layoutX="212.0" layoutY="24.0" mnemonicParsing="false" text="FG" />
+                                                                  <RadioButton fx:id="stok_prod_wip" layoutX="296.0" layoutY="24.0" mnemonicParsing="false" text="WIP" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                               <children>
+                                                                  <Button layoutX="21.0" layoutY="20.0" mnemonicParsing="false" text="Export Ke Excel" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                         </children>
+                                                      </GridPane>
+                                                   </children></AnchorPane>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="298.0" prefWidth="1022.0">
+                                                   <children>
+                                                      <TableView fx:id="stok_prod_tv" layoutX="178.0" layoutY="42.0" prefHeight="284.0" prefWidth="1022.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <columns>
+                                                          <TableColumn fx:id="stok_prod_namapart" prefWidth="115.0" text="Nama Part" />
+                                                          <TableColumn fx:id="stok_prod_stok" prefWidth="78.0" text="Stok" />
+                                                            <TableColumn fx:id="stok_prod_ng" prefWidth="74.0" text="NG" />
+                                                            <TableColumn fx:id="stok_prod_runner" prefWidth="61.0" text="Runner" />
+                                                            <TableColumn fx:id="stok_prod_bonggol" prefWidth="70.0" text="Bonggol" />
+                                                            <TableColumn fx:id="stok_prod_wip1" prefWidth="117.0" text="WIP(Belum ACC)" />
+                                                            <TableColumn fx:id="stok_prod_total" prefWidth="75.0" text="Total" />
+                                                            <TableColumn fx:id="stok_prod_status" prefWidth="89.0" text="Status" />
+                                                        </columns>
+                                                      </TableView>
+                                                   </children>
+                                                </AnchorPane>
+                                            </items>
+                                          </SplitPane>
+                                       </children></AnchorPane>
+                              </content>
+                            </Tab>
+                            <Tab text="Cek Stok WIP(Assy)">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.5370370370370371" layoutX="188.0" layoutY="171.0" orientation="VERTICAL" prefHeight="542.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <GridPane layoutX="235.0" layoutY="77.0" prefHeight="287.0" prefWidth="1022.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints maxHeight="245.0" minHeight="10.0" prefHeight="236.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints maxHeight="136.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                                               <children>
+                                                                  <Button layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#stok_wip_refresh" text="Refresh" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                               <children>
+                                                                  <Button layoutX="14.0" layoutY="13.0" mnemonicParsing="false" text="Export To Excel" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                         </children>
+                                                      </GridPane>
+                                                   </children></AnchorPane>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <TableView fx:id="stok_wip_tv" layoutX="97.0" layoutY="-4.0" prefHeight="210.0" prefWidth="1022.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <columns>
+                                                          <TableColumn fx:id="stok_wip_namapart" prefWidth="180.0" text="Nama Part" />
+                                                          <TableColumn fx:id="stok_wip_permintaanassy" prefWidth="111.0" text="Permintaan Assy" />
+                                                            <TableColumn fx:id="stok_wip_sisa" prefWidth="163.0" text="Stok WIP(Sisa Produksi)" />
+                                                        </columns>
+                                                      </TableView>
+                                                   </children>
+                                                </AnchorPane>
+                                            </items>
+                                          </SplitPane>
+                                       </children></AnchorPane>
+                              </content>
+                            </Tab>
+                              <Tab text="Cek Stok Assy">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.5962962962962963" layoutX="88.0" layoutY="185.0" orientation="VERTICAL" prefHeight="542.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <GridPane layoutX="123.0" layoutY="106.0" prefHeight="319.0" prefWidth="1022.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints maxHeight="266.0" minHeight="10.0" prefHeight="266.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints maxHeight="153.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                                               <children>
+                                                                  <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#stok_assy_refresh" text="Refresh" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                               <children>
+                                                                  <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Export To Excel" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                         </children>
+                                                      </GridPane>
+                                                   </children></AnchorPane>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <TableView fx:id="stok_assy_tv" layoutX="128.0" layoutY="8.0" prefHeight="215.0" prefWidth="1022.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <columns>
+                                                          <TableColumn fx:id="stok_assy_namapart" prefWidth="188.0" text="Nama Part" />
+                                                          <TableColumn fx:id="stok_assy_jumlah" prefWidth="119.0" text="Jumlah Assy" />
+                                                            <TableColumn fx:id="stok_assy_ng" minWidth="0.0" prefWidth="51.0" text="NG" />
+                                                            <TableColumn fx:id="stok_assy_total" prefWidth="75.0" text="Total" />
+                                                        </columns>
+                                                      </TableView>
+                                                   </children></AnchorPane>
+                                            </items>
+                                          </SplitPane>
+                                       </children></AnchorPane>
+                                </content>
+                              </Tab>
+                              <Tab text="Cek ONHOLD">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.5" layoutX="182.0" layoutY="171.0" orientation="VERTICAL" prefHeight="542.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                                            </items>
+                                          </SplitPane>
+                                       </children></AnchorPane>
+                                </content>
+                              </Tab>
+                              <Tab text="Cek Stok FG">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.5" layoutX="148.0" layoutY="156.0" orientation="VERTICAL" prefHeight="542.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                                            </items>
+                                          </SplitPane>
+                                       </children></AnchorPane>
+                                </content>
+                              </Tab>
+                              <Tab text="Cek Stok">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                </content>
+                              </Tab>
+                          </tabs>
+                        </TabPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Update Harga Material">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+            <Tab text="Laporan Online">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
