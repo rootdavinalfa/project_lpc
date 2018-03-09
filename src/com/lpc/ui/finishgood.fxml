@@ -348,6 +348,7 @@
                                                       <TextField fx:id="delivery_po" layoutX="112.0" layoutY="157.0" prefHeight="25.0" prefWidth="180.0" promptText="Purchase Order Customer" />
                                                       <Label layoutX="11.0" layoutY="216.0" text="Actual Pengiriman" />
                                                       <TextField fx:id="delivery_actual" layoutX="110.0" layoutY="212.0" prefHeight="25.0" prefWidth="181.0" promptText="Actual Pengiriman" />
+                                                      <Button layoutX="326.0" layoutY="278.0" mnemonicParsing="false" onAction="#delivery_refresh" text="REF" />
                                                    </children>
                                                 </AnchorPane>
                                             </items>
@@ -356,14 +357,14 @@
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="227.0" prefWidth="844.0">
                                        <children>
-                                          <TableView layoutX="172.0" layoutY="33.0" prefHeight="265.0" prefWidth="844.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <TableView fx:id="stok_delivery_tv" layoutX="172.0" layoutY="33.0" prefHeight="265.0" prefWidth="844.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <columns>
-                                              <TableColumn prefWidth="168.0" text="Nama Part" />
-                                              <TableColumn minWidth="4.0" prefWidth="128.0" text="PO Customer" />
-                                                <TableColumn prefWidth="154.0" text="Customer" />
-                                                <TableColumn prefWidth="102.0" text="Jumlah" />
-                                                <TableColumn prefWidth="207.0" text="Tanggal Delivery" />
-                                                <TableColumn prefWidth="75.0" text="Status" />
+                                              <TableColumn fx:id="stok_delivery_namapart" prefWidth="168.0" text="Nama Part" />
+                                              <TableColumn fx:id="stok_delivery_po" minWidth="4.0" prefWidth="128.0" text="PO Customer" />
+                                                <TableColumn fx:id="stok_delivery_customer" prefWidth="154.0" text="Customer" />
+                                                <TableColumn fx:id="stok_delivery_jumlah" prefWidth="102.0" text="Jumlah" />
+                                                <TableColumn fx:id="stok_delivery_tanggal" prefWidth="207.0" text="Tanggal Delivery" />
+                                                <TableColumn fx:id="stok_delivery_status" prefWidth="75.0" text="Status" />
                                             </columns>
                                           </TableView>
                                        </children>

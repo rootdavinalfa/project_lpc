@@ -1,8 +1,7 @@
 package com.lpc.control;
 
 import com.lpc.driver.connector;
-import com.lpc.model.stok_prod_model;
-import com.lpc.model.stok_wip_model;
+import com.lpc.model.*;
 import com.lpc.model.stok_assy_model;
 import com.lpc.ui.alert;
 import javafx.animation.Animation;
@@ -132,6 +131,22 @@ public class managementControl implements Initializable{
     @FXML private TableColumn<stok_assy_model,String> stok_assy_total;
     private ObservableList<stok_assy_model> stok_assy_models = FXCollections.observableArrayList();
 
+    //Stok ONHOLD
+    @FXML private TableView<stok_onhold_model> stok_onhold_tv;
+    @FXML private TableColumn<stok_onhold_model,String> stok_onhold_namapart;
+    @FXML private TableColumn<stok_onhold_model,String> stok_onhold_onhold;
+    private ObservableList<stok_onhold_model> stok_onhold_models = FXCollections.observableArrayList();
+
+    //STOK FG
+    @FXML private TableView<stok_fg_model> stok_fg_tv;
+    @FXML private TableColumn<stok_fg_model,String> stok_fg_namapart;
+    @FXML private TableColumn<stok_fg_model,String> stok_fg_stok;
+    @FXML private TableColumn<stok_fg_model,String> stok_fg_jenis;
+    @FXML private RadioButton stok_fg_nonassy;
+    @FXML private RadioButton stok_fg_assy;
+    @FXML private RadioButton stok_fg_all;
+    final ToggleGroup stok_fg_group = new ToggleGroup();
+    private ObservableList<stok_fg_model> stok_fg_models = FXCollections.observableArrayList();
 
     public void initialize(URL url, ResourceBundle rb){
         setCurrentTime();
@@ -141,7 +156,9 @@ public class managementControl implements Initializable{
         stok_wip_refresh();
         stok_assy_refresh();
         stok_prod_refresh(1);
-
+        stok_onhold_refresh();
+        radiobutton_stok_fg_check();
+        stok_fg_jenis(3);
     }
 
     @SuppressWarnings("all")
@@ -169,6 +186,34 @@ public class managementControl implements Initializable{
                         stok_prod_refresh(2);
 
                     }
+                    System.out.println(a);
+                }
+            }
+        });
+    }
+
+    @SuppressWarnings("all")
+    private void radiobutton_stok_fg_check(){
+        stok_fg_nonassy.setToggleGroup(stok_fg_group);
+        stok_fg_assy.setToggleGroup(stok_fg_group);
+        stok_fg_all.setToggleGroup(stok_fg_group);
+        stok_fg_all.setSelected(true);
+        stok_fg_group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            public void changed(ObservableValue<? extends Toggle> ov,
+                                Toggle old_toggle, Toggle new_toggle) {
+                if (stok_fg_group.getSelectedToggle() != null) {
+                    RadioButton button = (RadioButton)stok_fg_group.getSelectedToggle();
+                    String a =button.getId();
+
+                    if(Objects.equals(a, "stok_fg_nonassy")){
+                        stok_fg_jenis(1);
+
+                    }else if(Objects.equals(a, "stok_fg_assy")){
+                        stok_fg_jenis(2);
+                    }else if(Objects.equals(a, "stok_fg_all")){
+                        stok_fg_jenis(3);
+                    }
+
                     System.out.println(a);
                 }
             }
@@ -509,4 +554,106 @@ public class managementControl implements Initializable{
             System.out.println(e);
         }
     }
+    //STOK ONHOLD
+    private ObservableList<stok_onhold_model> getStok_onhold_models(){
+        return stok_onhold_models;
+    }
+    @FXML private void stok_onhold_refresh(){
+        try {
+            stok_onhold_tv.getItems().clear();
+            stok_onhold_models.clear();
+            Connection con = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            con = connector.setConnection();
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT nama_part,on_hold FROM stok_barang_fresh ORDER BY nama_part ASC;");
+            while (rs.next()){
+                stok_onhold_models.addAll(new stok_onhold_model(rs.getString(1),rs.getString(2)));
+                stok_onhold_namapart.setCellValueFactory(cellData -> cellData.getValue().namapartProperty());
+                stok_onhold_onhold.setCellValueFactory(cellData -> cellData.getValue().onholdProperty());
+
+            }
+            stok_onhold_tv.setItems(getStok_onhold_models());
+            con.close();
+
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    //Stok FG
+    private ObservableList<stok_fg_model> getStok_fg_models(){
+        return stok_fg_models;
+    }
+
+    @SuppressWarnings("all")
+    @FXML private void stok_fg_refresh(){
+        RadioButton button = (RadioButton)stok_fg_group.getSelectedToggle();
+        String a =button.getId();
+
+        if(Objects.equals(a, "stok_fg_nonassy")){
+            stok_fg_jenis(1);
+
+        }else if(Objects.equals(a, "stok_fg_assy")){
+            stok_fg_jenis(2);
+        }else if(Objects.equals(a, "stok_fg_all")){
+            stok_fg_jenis(3);
+        }
+    }
+    @SuppressWarnings("all")
+    private void stok_fg_jenis(int i){
+        try {
+            stok_fg_tv.getItems().clear();
+            stok_fg_models.clear();
+            Connection con = null;
+            Statement stmt =null;
+            ResultSet rs = null;
+            con = connector.setConnection();
+            stmt = con.createStatement();
+            String stat = null;
+            if(i== 1){
+                rs = stmt.executeQuery("SELECT nama_part,jumlah,stat FROM stok_wfg_total WHERE stat='non' ORDER BY nama_part ASC;");
+                while (rs.next()){
+                    stok_fg_models.addAll(new stok_fg_model(rs.getString(1),rs.getString(2),"Non Assy"));
+                    stok_fg_namapart.setCellValueFactory(cellData->cellData.getValue().namapartProperty());
+                    stok_fg_stok.setCellValueFactory(cellData -> cellData.getValue().stokProperty());
+                    stok_fg_jenis.setCellValueFactory(cellData -> cellData.getValue().jenisProperty());
+                }
+                stok_fg_tv.setItems(getStok_fg_models());
+                con.close();
+            }
+            else if(i == 2){
+                rs = stmt.executeQuery("SELECT nama_part,jumlah,stat FROM stok_wfg_total WHERE stat='assy' ORDER BY nama_part ASC;");
+                while (rs.next()){
+                    stok_fg_models.addAll(new stok_fg_model(rs.getString(1),rs.getString(2),"Assy"));
+                    stok_fg_namapart.setCellValueFactory(cellData->cellData.getValue().namapartProperty());
+                    stok_fg_stok.setCellValueFactory(cellData -> cellData.getValue().stokProperty());
+                    stok_fg_jenis.setCellValueFactory(cellData -> cellData.getValue().jenisProperty());
+                }
+                stok_fg_tv.setItems(getStok_fg_models());
+                con.close();
+            }
+            else if(i==3){
+                rs = stmt.executeQuery("SELECT nama_part,jumlah,stat FROM stok_wfg_total ORDER BY nama_part ASC,stat DESC ;");
+                while (rs.next()){
+                    if(rs.getString(3).equals("non")){
+                        stat = "Non Assy";
+                    }else if(rs.getString(3).equals("assy")){
+                        stat = "Assy";
+                    }
+                    stok_fg_models.addAll(new stok_fg_model(rs.getString(1),rs.getString(2),stat));
+                    stok_fg_namapart.setCellValueFactory(cellData->cellData.getValue().namapartProperty());
+                    stok_fg_stok.setCellValueFactory(cellData -> cellData.getValue().stokProperty());
+                    stok_fg_jenis.setCellValueFactory(cellData -> cellData.getValue().jenisProperty());
+                }
+                stok_fg_tv.setItems(getStok_fg_models());
+                con.close();
+            }
+        } catch (Exception e) {
+        }
+
+    }
+
+
 }
