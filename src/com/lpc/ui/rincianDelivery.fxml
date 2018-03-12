@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="492.0" prefWidth="739.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lpc.control.rincianControl">
+   <children>
+      <SplitPane dividerPositions="0.7408163265306122" layoutX="244.0" layoutY="-36.0" orientation="VERTICAL" prefHeight="436.0" prefWidth="691.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <SplitPane dividerPositions="0.2054421768707483" layoutX="158.0" layoutY="18.0" prefHeight="196.0" prefWidth="645.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="358.0" prefWidth="173.0">
+                           <children>
+                              <Label layoutX="-3.0" layoutY="155.0" prefHeight="48.0" prefWidth="167.0" text="Rincian Delivery">
+                                 <font>
+                                    <Font size="21.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                           <children>
+                              <TableView fx:id="rincian_tv" layoutX="48.0" layoutY="26.0" prefHeight="358.0" prefWidth="513.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <columns>
+                                  <TableColumn fx:id="rincian_namapart" prefWidth="143.0" text="Nama Part" />
+                                  <TableColumn fx:id="rincian_tanggal" prefWidth="81.0" text="Tanggal" />
+                                    <TableColumn fx:id="rincian_po" prefWidth="105.0" text="PO(Cust)" />
+                                    <TableColumn fx:id="rincian_do" prefWidth="102.0" text="DO" />
+                                    <TableColumn fx:id="rincian_jumlah" prefWidth="54.0" text="Jumlah" />
+                                    <TableColumn fx:id="rincian_surat" prefWidth="93.0" text="Surat Jalan" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <Button fx:id="close_rincian" layoutX="369.0" layoutY="69.0" mnemonicParsing="false" onAction="#close_rincian" text="OK" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

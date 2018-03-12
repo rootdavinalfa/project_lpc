@@ -14,8 +14,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import sun.java2d.pipe.SpanShapeRenderer;
 
@@ -144,6 +151,8 @@ public class finishgoodControl implements Initializable {
     @FXML private TableColumn<finishgood_delivery_stok,String> stok_delivery_jumlah;
     @FXML private TableColumn<finishgood_delivery_stok,String> stok_delivery_tanggal;
     @FXML private TableColumn<finishgood_delivery_stok,String> stok_delivery_status;
+    @FXML private TableColumn<finishgood_delivery_stok,String> stok_delivery_going;
+    @FXML private TableColumn<finishgood_delivery_stok,String> stok_delivery_deliver;
     private ObservableList<delivery_model> deliveMOD = FXCollections.observableArrayList();
     private ObservableList<finishgood_delivery_stok> stok_deliveMOD = FXCollections.observableArrayList();
 
@@ -158,6 +167,7 @@ public class finishgoodControl implements Initializable {
         delive_ts();
         delivery_refresh();
         delivery_actual.setDisable(true);
+        delivery_tabACT();
     }
 
     @SuppressWarnings("all")
@@ -852,15 +862,17 @@ public class finishgoodControl implements Initializable {
             ResultSet rs = null;
             con = connector.setConnection();
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT nama_part,no_po,cust,jumlah,tanggal,stat FROM stok_wfg_delivery ORDER BY nama_part ASC,tanggal DESC");
+            rs = stmt.executeQuery("SELECT nama_part,no_po,cust,jumlah,tanggal,stat,dlv,delivered FROM stok_wfg_delivery ORDER BY nama_part ASC,tanggal DESC");
             while (rs.next()){
-                stok_deliveMOD.addAll(new finishgood_delivery_stok(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6)));
+                stok_deliveMOD.addAll(new finishgood_delivery_stok(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8)));
                 stok_delivery_namapart.setCellValueFactory(cellData -> cellData.getValue().namapartProperty());
                 stok_delivery_po.setCellValueFactory(cellData-> cellData.getValue().poProperty());
                 stok_delivery_customer.setCellValueFactory(cellData -> cellData.getValue().customerProperty());
                 stok_delivery_jumlah.setCellValueFactory(cellData -> cellData.getValue().jumlahProperty());
                 stok_delivery_tanggal.setCellValueFactory(cellData->cellData.getValue().tanggalProperty());
                 stok_delivery_status.setCellValueFactory(cellData->cellData.getValue().statusProperty());
+                stok_delivery_going.setCellValueFactory(cellData->cellData.getValue().goingProperty());
+                stok_delivery_deliver.setCellValueFactory(cellData->cellData.getValue().deliverProperty());
             }
             stok_delivery_tv.setItems(getStok_deliveMOD());
             con.close();
@@ -868,5 +880,54 @@ public class finishgoodControl implements Initializable {
             System.out.println(e);
         }
     }
+    private void delivery_tabACT(){
+        stok_delivery_tv.setOnMouseClicked((MouseEvent event) ->{
+            if(event.getClickCount() == 1 ){
 
+                selected_delivery_tv();
+
+            }
+        });
+    }
+    private void selected_delivery_tv(){
+        try{
+            String nama_part = selected_delivery1();
+            //String deliver = selected_delivery2();
+            String po = selected_delivery3();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/com/lpc/ui/rincianDelivery.fxml"));
+            loader.load();
+            rincianControl mc = loader.getController();
+            mc.cach(nama_part,po);
+            Parent p = loader.getRoot();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(p));
+            stage.setResizable(false);
+            stage.initStyle(StageStyle.UTILITY);
+            stage.showAndWait();
+        }catch (Exception e ){
+            e.printStackTrace();
+        }
+
+
+    }
+    private String selected_delivery1(){
+        String a;
+        finishgood_delivery_stok fg = stok_delivery_tv.getSelectionModel().getSelectedItem();
+        a = fg.getNamapart();
+        return a;
+    }
+    private String selected_delivery2(){
+        String a;
+        finishgood_delivery_stok fg = stok_delivery_tv.getSelectionModel().getSelectedItem();
+        a = fg.getDeliver();
+        return a;
+    }
+    private String selected_delivery3(){
+        String a;
+        finishgood_delivery_stok fg = stok_delivery_tv.getSelectionModel().getSelectedItem();
+        a = fg.getPo();
+        return a;
+    }
 }

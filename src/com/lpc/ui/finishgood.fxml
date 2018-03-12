@@ -364,7 +364,9 @@
                                                 <TableColumn fx:id="stok_delivery_customer" prefWidth="154.0" text="Customer" />
                                                 <TableColumn fx:id="stok_delivery_jumlah" prefWidth="102.0" text="Jumlah" />
                                                 <TableColumn fx:id="stok_delivery_tanggal" prefWidth="207.0" text="Tanggal Delivery" />
-                                                <TableColumn fx:id="stok_delivery_status" prefWidth="75.0" text="Status" />
+                                                <TableColumn fx:id="stok_delivery_status" prefWidth="120.0" text="Model Pengiriman" />
+                                                <TableColumn fx:id="stok_delivery_going" prefWidth="100.0" text="Status" />
+                                                <TableColumn fx:id="stok_delivery_deliver" prefWidth="75.0" text="Terkirim" />
                                             </columns>
                                           </TableView>
                                        </children>

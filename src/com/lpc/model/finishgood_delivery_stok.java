@@ -11,13 +11,17 @@ public class finishgood_delivery_stok {
     private final SimpleStringProperty jumlah;
     private final SimpleStringProperty tanggal;
     private final SimpleStringProperty status;
-    public finishgood_delivery_stok(String np,String p ,String cus,String jmlh,String tgl,String stat){
+    private final SimpleStringProperty going;
+    private final SimpleStringProperty deliver;
+    public finishgood_delivery_stok(String np,String p ,String cus,String jmlh,String tgl,String stat,String go,String dev){
         this.namapart = new SimpleStringProperty(np);
         this.po = new SimpleStringProperty(p);
         this.customer = new SimpleStringProperty(cus);
         this.jumlah = new SimpleStringProperty(jmlh);
         this.tanggal = new SimpleStringProperty(tgl);
         this.status = new SimpleStringProperty(stat);
+        this.going = new SimpleStringProperty(go);
+        this.deliver = new SimpleStringProperty(dev);
     }
 
     public SimpleStringProperty jumlahProperty() {
@@ -42,5 +46,25 @@ public class finishgood_delivery_stok {
 
     public SimpleStringProperty poProperty() {
         return po;
+    }
+
+    public SimpleStringProperty deliverProperty() {
+        return deliver;
+    }
+
+    public SimpleStringProperty goingProperty() {
+        return going;
+    }
+
+    public String getNamapart() {
+        return namapart.get();
+    }
+
+    public String getPo() {
+        return po.get();
+    }
+
+    public String getDeliver() {
+        return deliver.get();
     }
 }
