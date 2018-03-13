@@ -1198,7 +1198,7 @@ public class produksiControl implements Initializable{
                         else if(stat.equals("WIP")){
                             rs2 = stmt.executeQuery("SELECT ok,ng,runner,bonggol FROM stok_barang_fresh WHERE nama_part='"+namaP+"' && stat='"+stat+"';");
                             if(rs2.next()){
-                                rs1 = stmt.executeQuery("SELECT wip,ng,runner,bonggol FROM stok_barang_fresh WHERE nama_part='"+namaP+"' WHERE stat='"+stat+"';");
+                                rs1 = stmt.executeQuery("SELECT wip,ng,runner,bonggol FROM stok_barang_fresh WHERE nama_part='"+namaP+"' && stat='"+stat+"';");
                                 while(rs1.next()){
                                     nA = rs1.getInt(1);
                                     nB = rs1.getInt(2);
@@ -1257,6 +1257,7 @@ public class produksiControl implements Initializable{
                 }
 
                 catch (Exception e) {
+                    System.out.println(e);
                     alert al = new alert();
                     al.error_sql();
                 }
@@ -1353,7 +1354,7 @@ public class produksiControl implements Initializable{
                         else if(stat.equals("WIP")){
                             rs2 = stmt.executeQuery("SELECT ok,ng,runner,bonggol FROM stok_barang_fresh WHERE nama_part='"+namaP+"' && stat='"+stat+"';");
                             if(rs2.next()){
-                                rs1 = stmt.executeQuery("SELECT wip,ng,runner,bonggol FROM stok_barang_fresh WHERE nama_part='"+namaP+"' WHERE stat='"+stat+"';");
+                                rs1 = stmt.executeQuery("SELECT wip,ng,runner,bonggol FROM stok_barang_fresh WHERE nama_part='"+namaP+"' && stat='"+stat+"';");
                                 while(rs1.next()){
                                     nA = rs1.getInt(1);
                                     nB = rs1.getInt(2);
@@ -2146,7 +2147,7 @@ public class produksiControl implements Initializable{
                 int hj2 = 0;
                 stmt.executeUpdate("INSERT INTO laporan_judgement(nama_part, ok, ng, stat) VALUES ('"+np+"','"+a+"','"+aa+"','"+stat+"');");
                 if(stat.equals("Assy")){
-                    rs = stmt.executeQuery("SELECT b.wip,a.ng,a.on_hold FROM stok_barang_fresh a,stok_barang_wip b WHERE nama_part='"+np+"';");
+                    rs = stmt.executeQuery("SELECT b.wip,a.ng,a.on_hold FROM stok_barang_fresh a,stok_barang_wip b WHERE a.nama_part='"+np+"' && b.nama_part='"+np+"';");
                     while(rs.next()){
                         b = rs.getInt(1);
                         bb = rs.getInt(2);
