@@ -1,8 +1,23 @@
+/*
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#+++																 +++
+#+++	 Davin Alfarizky putra Basudewa <rootdavin@yahoo.co.jp>		 +++
+#+++				Copyright 2018,IT Department LPC				 +++
+#+++						it_lpc@lpc-ind.com						 +++
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Version 0.0.1
+This File Contain some OpenSource Package.Please refer to GNU Public License
+for further information.
+This class,contain LPC proprietary that's coded by Davin.Please contact
+davin<rootdavin@yahoo.co.jp> or/ <it_lpc@lpc-ind.com>
+
+*/
 package com.lpc.control;
 
 import com.lpc.driver.connector;
 
 
+import com.lpc.driver.propertiesReader;
 import com.lpc.ui.alert;
 import davin.alfa.calendar;
 import davin.alfa.pass;
@@ -291,6 +306,7 @@ public class produksiControl implements Initializable{
         //Optional<String> result = pd.showAndWait();
         //result.ifPresent(password -> System.out.println(password));
 
+
         setCurrentTime();
         tf();
         tf1();
@@ -318,10 +334,12 @@ public class produksiControl implements Initializable{
         ctprod_tabACT();
         onhold_shift();
         cek_stok_assy();
+
     }
     public ObservableList<kodep> getKodep(){
         return kodepe;
     }
+
     private void list_kod(){
         try {
             Class.forName("com.lpc.driver.connector");

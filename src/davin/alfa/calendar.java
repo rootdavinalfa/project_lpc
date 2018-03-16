@@ -1,7 +1,17 @@
 /*
- * Copyright (c) $today.year.Davin Alfarizky Putra Basudewa.This software is for educational only
- */
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#+++																 +++
+#+++	 Davin Alfarizky putra Basudewa <rootdavin@yahoo.co.jp>		 +++
+#+++				Copyright 2018,IT Department LPC				 +++
+#+++						it_lpc@lpc-ind.com						 +++
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Version 0.0.1
+This File Contain some OpenSource Package.Please refer to GNU Public License
+for further information.
+This class,contain LPC proprietary that's coded by Davin.Please contact
+davin<rootdavin@yahoo.co.jp> or/ <it_lpc@lpc-ind.com>
 
+*/
 package davin.alfa;
 
 import java.util.Calendar;
