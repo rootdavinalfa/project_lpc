@@ -73,7 +73,8 @@ public class modal_cekprod implements Initializable{
         lbl_namapart.setText(nama);
         lbl_jam.setText(time);
         lbl_tp.setText(date);
-        cach(stat);
+        cach();
+//        cach(stat);
     }
 
     public String getNama(){
@@ -108,7 +109,7 @@ public class modal_cekprod implements Initializable{
     }
 
 
-    public void cach(String stat){
+    public void cach(){
 
         try {
             //fromCP f = new fromCP();
@@ -136,6 +137,7 @@ public class modal_cekprod implements Initializable{
                     System.out.println(rs.getString(5));
                     System.out.println(rs.getString(6));
                     ok.addAll(new PieChart.Data("Produksi Good(WIP)",rs.getInt(5)),new PieChart.Data("Produksi NG",rs.getInt(6)),new PieChart.Data("ONHOLD",rs.getInt(11)));
+                    System.out.println(rs.getString(5)+rs.getString(6)+rs.getString(11));
                     total.setText("Total Produksi: "+rs.getString(7));
                     float aa = rs.getFloat(5);
                     float bb = rs.getFloat(6);

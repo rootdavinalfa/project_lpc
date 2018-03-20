@@ -24,6 +24,7 @@ public class connector {
 
 
         try{
+            System.out.println("Driver Starting, Copyright(c) 2018 IT LPC Driver Loader");
             propertiesReader pros = new propertiesReader();
             pros.getProperties();
             String user_LoginSql = pros.getUser();
@@ -32,10 +33,10 @@ public class connector {
             String host = pros.getHost();
             String port= pros.getPort();
 
-            System.out.println(host+user_LoginSql+Pass+database+port);
+            System.out.println("Connecting ke DB");
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://"+host+":"+port+"/"+database+"?useSSL=false",user_LoginSql,Pass);
-
+            System.out.println("Connection Established");
             return con;
         }
         catch (Exception e){

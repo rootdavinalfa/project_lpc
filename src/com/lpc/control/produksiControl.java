@@ -1968,52 +1968,61 @@ public class produksiControl implements Initializable{
             ResultSet rs1 = null;
             ResultSet rs2 = null;
             ResultSet rs3 = null;
+            ResultSet rs4 = null;
             con = connector.setConnection();
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT nama_part FROM list_part WHERE code_part='"+kodeP+"';");
             while(rs.next()){
                 namaP = rs.getString(1);
             }
-            rs1 = stmt.executeQuery("SELECT nama_part FROM stok_barang_subassy WHERE nama_part='"+namaP+"';");
-            if(rs1.next()){
-                rs2 = stmt.executeQuery("SELECT stok,ng FROM stok_barang_subassy WHERE  nama_part='"+namaP+"';");
-                while (rs2.next()){
-                    nB = rs2.getInt(1);
-                    nBB = rs2.getInt(2);
+            rs4 = stmt.executeQuery("SELECT nama_part FROM stok_barang_wip WHERE nama_part='"+namaP+"';");
+            if(rs4.next()){
+                rs1 = stmt.executeQuery("SELECT nama_part FROM stok_barang_subassy WHERE nama_part='"+namaP+"' ;");
+                if(rs1.next()){
+                    rs2 = stmt.executeQuery("SELECT stok,ng FROM stok_barang_subassy WHERE  nama_part='"+namaP+"';");
+                    while (rs2.next()){
+                        nB = rs2.getInt(1);
+                        nBB = rs2.getInt(2);
+                    }
+                    rs3 = stmt.executeQuery("SELECT wip FROM stok_barang_wip WHERE nama_part='"+namaP+"';");
+                    while (rs3.next()){
+                        zA = rs3.getInt(1);
+                    }
+                    zB =nA+nAA;
+                    //zTot = zA - nA;
+                    nTot = nA + nB;
+                    nC = nA + nAA;
+                    nCC = nAA + nBB;
+                    zTot = zA - zB;
+                    stmt.executeUpdate("UPDATE stok_barang_wip set wip='"+zTot+"' WHERE nama_part='"+namaP+"';");
+                    stmt.executeUpdate("UPDATE stok_barang_subassy SET stok='"+nTot+"',ng='"+nCC+"' WHERE nama_part='"+namaP+"';");
+                    stmt.executeUpdate("INSERT INTO laporan_assy(nama_part, jumlah, tanggal,ng) VALUES ('"+namaP+"','"+nA+"','"+date+"','"+nAA+"');");
+                    //stmt.executeUpdate("INSERT INTO stok_barang_wip(nama_part, wip) VALUES('"+namaP+"','"+nA+"');");
+                    con.close();
+                    alert al = new alert();
+                    al.info_upload();
                 }
-                rs3 = stmt.executeQuery("SELECT wip FROM stok_barang_wip WHERE nama_part='"+namaP+"';");
-                while (rs3.next()){
-                    zA = rs3.getInt(1);
+                else if (!rs1.next()){
+                    rs3 = stmt.executeQuery("SELECT wip FROM stok_barang_wip WHERE nama_part='"+namaP+"';");
+                    while (rs3.next()){
+                        zA = rs3.getInt(1);
+                    }
+                    zB = nA+nAA;
+                    zTot = zA - zB;
+                    stmt.executeUpdate("UPDATE stok_barang_wip set wip='"+zTot+"' WHERE nama_part='"+namaP+"';");
+                    stmt.executeUpdate("INSERT INTO stok_barang_subassy(nama_part,stok,ng) VALUES ('"+namaP+"','"+nA+"','"+nAA+"');");
+                    stmt.executeUpdate("INSERT INTO laporan_assy(nama_part, jumlah, tanggal,ng) VALUES ('"+namaP+"','"+nA+"','"+date+"','"+nAA+"');");
+                    //stmt.executeUpdate("INSERT INTO stok_barang_wip(nama_part, wip) VALUES('"+namaP+"','"+nA+"');");
+                    con.close();
+                    alert al = new alert();
+                    al.info_upload();
                 }
-                zB =nA+nAA;
-                //zTot = zA - nA;
-                nTot = nA + nB;
-                nC = nA + nAA;
-                nCC = nAA + nBB;
-                zTot = zA - zB;
-                stmt.executeUpdate("UPDATE stok_barang_wip set wip='"+zTot+"' WHERE nama_part='"+namaP+"';");
-                stmt.executeUpdate("UPDATE stok_barang_subassy SET stok='"+nTot+"',ng='"+nCC+"' WHERE nama_part='"+namaP+"';");
-                stmt.executeUpdate("INSERT INTO laporan_assy(nama_part, jumlah, tanggal,ng) VALUES ('"+namaP+"','"+nA+"','"+date+"','"+nAA+"');");
-                //stmt.executeUpdate("INSERT INTO stok_barang_wip(nama_part, wip) VALUES('"+namaP+"','"+nA+"');");
-                con.close();
-                alert al = new alert();
-                al.info_upload();
             }
-            else if (!rs1.next()){
-                rs3 = stmt.executeQuery("SELECT wip FROM stok_barang_wip WHERE nama_part='"+namaP+"';");
-                while (rs3.next()){
-                    zA = rs3.getInt(1);
-                }
-                zB = nA+nAA;
-                zTot = zA - zB;
-                stmt.executeUpdate("UPDATE stok_barang_wip set wip='"+zTot+"' WHERE nama_part='"+namaP+"';");
-                stmt.executeUpdate("INSERT INTO stok_barang_subassy(nama_part,stok,ng) VALUES ('"+namaP+"','"+nA+"','"+nAA+"');");
-                stmt.executeUpdate("INSERT INTO laporan_assy(nama_part, jumlah, tanggal,ng) VALUES ('"+namaP+"','"+nA+"','"+date+"','"+nAA+"');");
-                //stmt.executeUpdate("INSERT INTO stok_barang_wip(nama_part, wip) VALUES('"+namaP+"','"+nA+"');");
-                con.close();
+            else{
                 alert al = new alert();
-                al.info_upload();
+                al.warn_wipassy();
             }
+
 
         }catch (Exception e){
             alert al = new alert();

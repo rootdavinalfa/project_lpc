@@ -33,14 +33,15 @@ public class propertiesReader {
         try {
             String userdir = System.getProperty("user.dir");
 
-
+            System.out.println("Read Config Files at /config.properties,Copyright(c)2018 IT LPC");
             Properties prop = new Properties();
             String propFileName = "./config.properties";
 
             inputStream = new FileInputStream(propFileName);
             //inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-
+            System.out.println("Initialize /config.properties");
             if (inputStream != null) {
+                System.out.println("Config Loaded");
                 prop.load(inputStream);
             } else {
                 throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
@@ -59,6 +60,7 @@ public class propertiesReader {
             port = port1;
             pass = pass1;
             database = database1;
+            System.out.println("Copying Config to Memory");
 
         } catch (Exception e) {
             System.out.println("Exception: " + e);
