@@ -598,6 +598,130 @@
                         </AnchorPane>
                     </content>
                   </Tab>
+                  <Tab text="Export Data to excel">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TabPane layoutX="46.0" layoutY="21.0" prefHeight="546.0" prefWidth="1200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <tabs>
+                                  <Tab text="Produksi Non Assy">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <SplitPane dividerPositions="0.0974264705882353" layoutX="201.0" layoutY="105.0" orientation="VERTICAL" prefHeight="546.0" prefWidth="1171.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                  <items>
+                                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                         <children>
+                                                            <Label layoutX="14.0" layoutY="8.0" text="Laporan Produksi Non Assy">
+                                                               <font>
+                                                                  <Font size="23.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </AnchorPane>
+                                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                         <children>
+                                                            <TabPane layoutX="31.0" layoutY="14.0" prefHeight="488.0" prefWidth="1169.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                              <tabs>
+                                                                <Tab text="Laporan stok">
+                                                                  <content>
+                                                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                                           <children>
+                                                                              <SplitPane dividerPositions="0.5" layoutX="106.0" layoutY="68.0" orientation="VERTICAL" prefHeight="459.0" prefWidth="1169.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                                <items>
+                                                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                                                       <children>
+                                                                                          <Button layoutX="370.0" layoutY="51.0" mnemonicParsing="false" prefHeight="125.0" prefWidth="226.0" text="Export" />
+                                                                                       </children>
+                                                                                    </AnchorPane>
+                                                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="252.0" prefWidth="1167.0" />
+                                                                                </items>
+                                                                              </SplitPane>
+                                                                           </children>
+                                                                        </AnchorPane>
+                                                                  </content>
+                                                                </Tab>
+                                                              </tabs>
+                                                            </TabPane>
+                                                         </children>
+                                                      </AnchorPane>
+                                                  </items>
+                                                </SplitPane>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </Tab>
+                                  <Tab text="Produksi Sub Assy">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <SplitPane dividerPositions="0.0974264705882353" orientation="VERTICAL" prefHeight="546.0" prefWidth="1171.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <items>
+                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                         <children>
+                                                            <Label layoutX="14.0" layoutY="8.0" text="Laporan Produksi Sub Assy">
+                                                               <font>
+                                                                  <Font size="23.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                         <children>
+                                                            <TabPane layoutX="31.0" layoutY="14.0" prefHeight="488.0" prefWidth="1169.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                               <tabs>
+                                                                  <Tab text="Laporan stok">
+                                                                     <content>
+                                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                                           <children>
+                                                                              <SplitPane dividerPositions="0.5" layoutX="106.0" layoutY="68.0" orientation="VERTICAL" prefHeight="459.0" prefWidth="1169.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                                 <items>
+                                                                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                                                       <children>
+                                                                                          <Button layoutX="329.0" layoutY="23.0" mnemonicParsing="false" prefHeight="181.0" prefWidth="240.0" text="Export" />
+                                                                                       </children>
+                                                                                    </AnchorPane>
+                                                                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="252.0" prefWidth="1167.0" />
+                                                                                 </items>
+                                                                              </SplitPane>
+                                                                           </children>
+                                                                        </AnchorPane>
+                                                                     </content>
+                                                                  </Tab>
+                                                                  <Tab text="Laporan Assy">
+                                                                    <content>
+                                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                                           <children>
+                                                                              <Button layoutX="326.0" layoutY="139.0" mnemonicParsing="false" prefHeight="181.0" prefWidth="240.0" text="Export" />
+                                                                           </children>
+                                                                        </AnchorPane>
+                                                                    </content>
+                                                                  </Tab>
+                                                                  <Tab text="Laporan WIP">
+                                                                    <content>
+                                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                                           <children>
+                                                                              <Button layoutX="323.0" layoutY="139.0" mnemonicParsing="false" prefHeight="181.0" prefWidth="240.0" text="Export" />
+                                                                           </children>
+                                                                        </AnchorPane>
+                                                                    </content>
+                                                                  </Tab>
+                                                               </tabs>
+                                                            </TabPane>
+                                                         </children>
+                                                      </AnchorPane>
+                                                   </items>
+                                                </SplitPane>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </Tab>
+                                </tabs>
+                              </TabPane>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
               </tabs>
             </TabPane>
          </children>
