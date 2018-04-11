@@ -511,7 +511,7 @@ public class finishgoodControl implements Initializable {
             ResultSet rs = null;
             con = connector.setConnection();
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT a.nama_part,a.ok,b.code_part FROM stok_barang_fresh a,list_part b WHERE a.nama_part = b.nama_part;");
+            rs = stmt.executeQuery("SELECT a.nama_part,a.ok,b.code_part FROM stok_barang_fresh a,list_part b WHERE a.nama_part = b.nama_part && stat='FG';");
             while (rs.next()) {
                 stok_non1.addAll(new stok_nonmodel1(rs.getString(1), rs.getString(2), rs.getString(3)));
                 stok_nonNPCOL1.setCellValueFactory(cellData -> cellData.getValue().nama_partProperty());

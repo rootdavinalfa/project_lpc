@@ -2281,4 +2281,272 @@ public class produksiControl implements Initializable{
     private ObservableList<stok_assy_model> getStok_assy_models(){
         return stok_assy_models;
     }
+    //Export Region
+    @SuppressWarnings("all")
+    @FXML private void export_non_assy(){
+        try {
+            Calendar time = Calendar.getInstance();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String date = simpleDateFormat.format(time.getTime());
+            SimpleDateFormat simpleDateFormat1= new SimpleDateFormat("HH:mm:ss");
+            String timex = simpleDateFormat1.format(time.getTime());
+            //String kpLAPX = lap_kodepart_xport.getText();
+            Class.forName("com.lpc.driver.connector");
+            Connection con = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            con = connector.setConnection();
+            stmt = con.createStatement();
+            FileInputStream input_document = new FileInputStream(new File("lapor_audit_stok_nassy.DATA"));
+            XSSFWorkbook workbook = new XSSFWorkbook(input_document);
+            XSSFSheet my_worksheet = workbook.getSheetAt(0);
+            rs = stmt.executeQuery("SELECT nama_part,stat,ok,on_hold,bonggol FROM stok_barang_fresh WHERE stat='FG';");
+            int index = 5;
+            XSSFRow header = my_worksheet.createRow(1);
+            XSSFRow header1 = my_worksheet.createRow(2);
+            header.createCell(0).setCellValue("Tanggal Laporan");
+            header1.createCell(0).setCellValue("Jam Laporan");
+            header.createCell(2).setCellValue(date);
+            header1.createCell(2).setCellValue(timex);
+            System.out.println(date+" "+timex);
+            //cell.setCellValue("1");
+            //cell1.setCellValue("2");
+            my_worksheet.setColumnWidth(0,20*25);
+            my_worksheet.setColumnWidth(1,256*25);
+            my_worksheet.autoSizeColumn(2);
+            my_worksheet.autoSizeColumn(3);
+            my_worksheet.autoSizeColumn(4);
+            my_worksheet.autoSizeColumn(5);
+
+
+            float persen = 0;
+            int i = 1;
+            while(rs.next()){
+                XSSFRow row = my_worksheet.createRow(index);
+                XSSFCellStyle cellStyle = workbook.createCellStyle();
+                //cellStyle.setBorderLeft();
+
+                row.createCell(0).setCellValue(i);
+                //row.createCell(0).setCellStyle(style);
+                row.createCell(1).setCellValue(rs.getString(1));
+                row.createCell(2).setCellValue(rs.getString(2));
+                row.createCell(3).setCellValue(rs.getString(3));
+                row.createCell(4).setCellValue(rs.getString(4));
+                row.createCell(5).setCellValue(rs.getString(5));
+
+                    index++;
+                    i++;
+
+
+
+
+            }
+            con.close();
+            input_document.close();
+            String filenama = "stokbarang_nonassy"+".xlsx";
+            FileOutputStream output_file =new FileOutputStream(new File(filenama));
+            workbook.write(output_file);
+            output_file.close();
+
+            alert al = new alert();
+            al.info_export();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @SuppressWarnings("all")
+    @FXML private void export_stok_assy(){
+        try {
+            Calendar time = Calendar.getInstance();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String date = simpleDateFormat.format(time.getTime());
+            SimpleDateFormat simpleDateFormat1= new SimpleDateFormat("HH:mm:ss");
+            String timex = simpleDateFormat1.format(time.getTime());
+            //String kpLAPX = lap_kodepart_xport.getText();
+            Class.forName("com.lpc.driver.connector");
+            Connection con = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            con = connector.setConnection();
+            stmt = con.createStatement();
+            FileInputStream input_document = new FileInputStream(new File("lapor_audit_stok_assy.DATA"));
+            XSSFWorkbook workbook = new XSSFWorkbook(input_document);
+            XSSFSheet my_worksheet = workbook.getSheetAt(0);
+            rs = stmt.executeQuery("SELECT nama_part,stat,wip,on_hold,bonggol FROM stok_barang_fresh WHERE stat='WIP';");
+            int index = 5;
+            XSSFRow header = my_worksheet.createRow(1);
+            XSSFRow header1 = my_worksheet.createRow(2);
+            header.createCell(0).setCellValue("Tanggal Laporan");
+            header1.createCell(0).setCellValue("Jam Laporan");
+            header.createCell(2).setCellValue(date);
+            header1.createCell(2).setCellValue(timex);
+            System.out.println(date+" "+timex);
+            //cell.setCellValue("1");
+            //cell1.setCellValue("2");
+            my_worksheet.setColumnWidth(0,20*25);
+            my_worksheet.setColumnWidth(1,256*25);
+            my_worksheet.autoSizeColumn(2);
+            my_worksheet.autoSizeColumn(3);
+            my_worksheet.autoSizeColumn(4);
+            my_worksheet.autoSizeColumn(5);
+
+
+            float persen = 0;
+            int i = 1;
+            while(rs.next()){
+                XSSFRow row = my_worksheet.createRow(index);
+                XSSFCellStyle cellStyle = workbook.createCellStyle();
+                //cellStyle.setBorderLeft();
+
+                row.createCell(0).setCellValue(i);
+                //row.createCell(0).setCellStyle(style);
+                row.createCell(1).setCellValue(rs.getString(1));
+                row.createCell(2).setCellValue(rs.getString(2));
+                row.createCell(3).setCellValue(rs.getString(3));
+                row.createCell(4).setCellValue(rs.getString(4));
+                row.createCell(5).setCellValue(rs.getString(5));
+                index++;
+                i++;
+            }
+            con.close();
+            input_document.close();
+            String filenama = "stokbarang_assy"+".xlsx";
+            FileOutputStream output_file =new FileOutputStream(new File(filenama));
+            workbook.write(output_file);
+            output_file.close();
+
+            alert al = new alert();
+            al.info_export();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @SuppressWarnings("all")
+    @FXML private void export_stok_wip_ongoing(){
+        try {
+            Calendar time = Calendar.getInstance();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String date = simpleDateFormat.format(time.getTime());
+            SimpleDateFormat simpleDateFormat1= new SimpleDateFormat("HH:mm:ss");
+            String timex = simpleDateFormat1.format(time.getTime());
+            //String kpLAPX = lap_kodepart_xport.getText();
+            Class.forName("com.lpc.driver.connector");
+            Connection con = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            con = connector.setConnection();
+            stmt = con.createStatement();
+            FileInputStream input_document = new FileInputStream(new File("lapor_audit_stok_wip_ongoing.DATA"));
+            XSSFWorkbook workbook = new XSSFWorkbook(input_document);
+            XSSFSheet my_worksheet = workbook.getSheetAt(0);
+            rs = stmt.executeQuery("SELECT nama_part,wip FROM stok_barang_wip;");
+            int index = 5;
+            XSSFRow header = my_worksheet.createRow(1);
+            XSSFRow header1 = my_worksheet.createRow(2);
+            header.createCell(0).setCellValue("Tanggal Laporan");
+            header1.createCell(0).setCellValue("Jam Laporan");
+            header.createCell(2).setCellValue(date);
+            header1.createCell(2).setCellValue(timex);
+            System.out.println(date+" "+timex);
+            //cell.setCellValue("1");
+            //cell1.setCellValue("2");
+            my_worksheet.setColumnWidth(0,20*25);
+            my_worksheet.setColumnWidth(1,256*25);
+            my_worksheet.autoSizeColumn(2);
+
+
+            float persen = 0;
+            int i = 1;
+            while(rs.next()){
+                XSSFRow row = my_worksheet.createRow(index);
+                XSSFCellStyle cellStyle = workbook.createCellStyle();
+                //cellStyle.setBorderLeft();
+
+                row.createCell(0).setCellValue(i);
+                //row.createCell(0).setCellStyle(style);
+                row.createCell(1).setCellValue(rs.getString(1));
+                row.createCell(2).setCellValue(rs.getString(2));
+                index++;
+                i++;
+            }
+            con.close();
+            input_document.close();
+            String filenama = "stokbarang_wip_ongoing"+".xlsx";
+            FileOutputStream output_file =new FileOutputStream(new File(filenama));
+            workbook.write(output_file);
+            output_file.close();
+
+            alert al = new alert();
+            al.info_export();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @SuppressWarnings("all")
+    @FXML private void export_stok_assy_finish(){
+        try {
+            Calendar time = Calendar.getInstance();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String date = simpleDateFormat.format(time.getTime());
+            SimpleDateFormat simpleDateFormat1= new SimpleDateFormat("HH:mm:ss");
+            String timex = simpleDateFormat1.format(time.getTime());
+            //String kpLAPX = lap_kodepart_xport.getText();
+            Class.forName("com.lpc.driver.connector");
+            Connection con = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            con = connector.setConnection();
+            stmt = con.createStatement();
+            FileInputStream input_document = new FileInputStream(new File("lapor_audit_stok_assy_finish.DATA"));
+            XSSFWorkbook workbook = new XSSFWorkbook(input_document);
+            XSSFSheet my_worksheet = workbook.getSheetAt(0);
+            rs = stmt.executeQuery("SELECT nama_part,stok,ng FROM stok_barang_subassy;");
+            int index = 5;
+            XSSFRow header = my_worksheet.createRow(1);
+            XSSFRow header1 = my_worksheet.createRow(2);
+            header.createCell(0).setCellValue("Tanggal Laporan");
+            header1.createCell(0).setCellValue("Jam Laporan");
+            header.createCell(2).setCellValue(date);
+            header1.createCell(2).setCellValue(timex);
+            System.out.println(date+" "+timex);
+            //cell.setCellValue("1");
+            //cell1.setCellValue("2");
+            my_worksheet.setColumnWidth(0,20*25);
+            my_worksheet.setColumnWidth(1,256*25);
+            my_worksheet.autoSizeColumn(2);
+            my_worksheet.autoSizeColumn(3);
+
+
+            float persen = 0;
+            int i = 1;
+            while(rs.next()){
+                XSSFRow row = my_worksheet.createRow(index);
+                XSSFCellStyle cellStyle = workbook.createCellStyle();
+                //cellStyle.setBorderLeft();
+
+                row.createCell(0).setCellValue(i);
+                //row.createCell(0).setCellStyle(style);
+                row.createCell(1).setCellValue(rs.getString(1));
+                row.createCell(2).setCellValue(rs.getString(2));
+                row.createCell(3).setCellValue(rs.getString(3));
+                index++;
+                i++;
+            }
+            con.close();
+            input_document.close();
+            String filenama = "stokbarang_assy_finish"+".xlsx";
+            FileOutputStream output_file =new FileOutputStream(new File(filenama));
+            workbook.write(output_file);
+            output_file.close();
+
+            alert al = new alert();
+            al.info_export();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

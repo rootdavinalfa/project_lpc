@@ -631,7 +631,7 @@
                                                                                 <items>
                                                                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                                                                        <children>
-                                                                                          <Button layoutX="370.0" layoutY="51.0" mnemonicParsing="false" prefHeight="125.0" prefWidth="226.0" text="Export" />
+                                                                                          <Button layoutX="370.0" layoutY="51.0" mnemonicParsing="false" onAction="#export_non_assy" prefHeight="125.0" prefWidth="226.0" text="Export" />
                                                                                        </children>
                                                                                     </AnchorPane>
                                                                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="252.0" prefWidth="1167.0" />
@@ -678,7 +678,7 @@
                                                                                  <items>
                                                                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                                                                        <children>
-                                                                                          <Button layoutX="329.0" layoutY="23.0" mnemonicParsing="false" prefHeight="181.0" prefWidth="240.0" text="Export" />
+                                                                                          <Button layoutX="329.0" layoutY="23.0" mnemonicParsing="false" onAction="#export_stok_assy" prefHeight="181.0" prefWidth="240.0" text="Export" />
                                                                                        </children>
                                                                                     </AnchorPane>
                                                                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="252.0" prefWidth="1167.0" />
@@ -688,20 +688,20 @@
                                                                         </AnchorPane>
                                                                      </content>
                                                                   </Tab>
-                                                                  <Tab text="Laporan Assy">
+                                                                  <Tab text="Laporan WIP ongoing">
                                                                     <content>
                                                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                                            <children>
-                                                                              <Button layoutX="326.0" layoutY="139.0" mnemonicParsing="false" prefHeight="181.0" prefWidth="240.0" text="Export" />
+                                                                              <Button layoutX="323.0" layoutY="139.0" mnemonicParsing="false" onAction="#export_stok_wip_ongoing" prefHeight="181.0" prefWidth="240.0" text="Export" />
                                                                            </children>
                                                                         </AnchorPane>
                                                                     </content>
                                                                   </Tab>
-                                                                  <Tab text="Laporan WIP">
+                                                                  <Tab text="Laporan Assy">
                                                                     <content>
                                                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                                            <children>
-                                                                              <Button layoutX="323.0" layoutY="139.0" mnemonicParsing="false" prefHeight="181.0" prefWidth="240.0" text="Export" />
+                                                                              <Button layoutX="326.0" layoutY="139.0" mnemonicParsing="false" onAction="#export_stok_assy_finish" prefHeight="181.0" prefWidth="240.0" text="Export" />
                                                                            </children>
                                                                         </AnchorPane>
                                                                     </content>
